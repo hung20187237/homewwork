@@ -1,0 +1,29 @@
+.dashboardaccount{
+    width: 80%;
+    margin-top: 10vh;
+}
+.accountcontainer{
+    display: flex;
+    justify-content: space-between;
+}
+.dashboardaccounttitle{
+    font-size: 20px;
+    padding: 20px 30px;
+    display: block;
+    box-sizing: border-box;
+}
+.accountcontaineritem{
+    width: 20%;
+    border: 1px solid;
+    height: 4vh;
+    margin-left: 20px;
+}
+.accountcontaineritem > span{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    padding-top:  6px;
+}
+.dashboardaccounttop{
+    margin-bottom: 6vh;
+}

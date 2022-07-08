@@ -1,0 +1,70 @@
+.postlistbody{
+    margin-top: 8vh;
+    overflow-y: scroll;
+    background-color: beige;
+    margin: 8vh 4vh;
+}
+.posttime{
+    border: 1px solid;
+    padding: 10px 28px;
+    margin: 2vh 4vh;
+}
+.topaccountname{
+    border: 1px solid;
+    padding: 10px 28px;
+    margin: 2vh 4vh;
+}
+.listposttop{
+    display: flex;
+    justify-content: space-between;
+}
+.buttonlist{
+    display: flex;
+    justify-content: space-between;
+    margin: 2vh 4vh;
+
+}
+.postlistbutton{
+    width: 16%;
+    height: 6vh;
+}
+.postlistbutton > span{
+    font-size: 16px;
+}
+.postlistitem{
+    border: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4vh;
+}
+.postitemleft{
+    width: 80%;
+}
+.postitemleft > div{
+    padding: 1vh;
+    display: flex;
+}
+.postitemleft > div > p{
+    margin-left: 2.5vh;
+    font-size: 18px;
+}
+.postitemleft > span{
+    display: block;
+    padding-left: 1vh;
+    padding-top: 1vh;
+    font-size: 16px;
+}
+
+.imgpostitem{
+    width: 16vh;
+    height: 8vh;
+}
+.postitemright{
+    width: 10%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.postitemright > span{
+    width: 100%;
+    padding-top: 20px;
+}

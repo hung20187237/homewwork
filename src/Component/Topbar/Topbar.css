@@ -1,0 +1,25 @@
+.topbarcontainer{
+    height: 60px;
+    width: 100%;
+    background-color: rgb(245, 207, 181);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    justify-content: space-between;
+    z-index: 999;
+}
+.topbarlogo{
+    font-size: 32px;
+    font-weight: 700;
+    padding: 10px 20px;
+    margin-left: 10px;
+}
+.topbaruser{
+    padding: 10px 20px;
+    margin-right: 10px;
+}
+.topbarname{
+    font-size: 24px;
+    padding: 0 20px;
+}
