@@ -27,10 +27,15 @@
     margin-bottom: 20px;
     cursor: pointer;
     padding: 10px;
+    text-decoration: underline;
 }
 .sidebarListItemText{
     font-size: 20px;
     font-weight: 400;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    text-decoration: underline;
+    
 }
 .sidebarListItemText:hover{
     font-weight: 700;

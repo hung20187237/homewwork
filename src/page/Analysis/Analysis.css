@@ -1,0 +1,50 @@
+.mainanalysis{
+    flex: 8;
+    margin-left: 4vh;
+    margin-right: 4vh;
+}
+.analysistop{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4vh;
+    margin-bottom: 6vh;
+}
+.analysisacount{
+    padding: 4px 36px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.analysisdate{
+    padding: 4px 36px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.bodyanalysistop{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4vh;
+}
+.bodyanalysistopcat{
+    padding: 12px 28px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.followerchart{
+    width: 100%;
+    height: 24vh;
+    border: 1px solid;
+    border-radius: 5px;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 4vh;
+}
+.postranking{
+    width: 100%;
+    height: 20vh;
+    border: 1px solid;
+    border-radius: 5px;
+    text-align: center;
+    justify-content: center;
+    overflow-y: scroll;
+    position: sticky;
+}
