@@ -27,14 +27,13 @@
     margin-bottom: 20px;
     cursor: pointer;
     padding: 10px;
-    text-decoration: underline;
+
 }
 .sidebarListItemText{
     font-size: 20px;
     font-weight: 400;
     overflow:hidden;
-    text-overflow: ellipsis;
-    text-decoration: underline;
+
     
 }
 .sidebarListItemText:hover{
@@ -42,4 +41,7 @@
 }
 .sidebarListItemText:active{
     font-weight: 700;
+}
+.link{
+    text-decoration: none;
 }

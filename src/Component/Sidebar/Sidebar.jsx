@@ -29,7 +29,8 @@ export default function Sidebar() {
     <div className='sidebar'>
       <ul className='sidebarlist'>
         {(userFeatureList).map((item) => (
-          <Link 
+          <Link style={{ textDecoration: 'none'}}
+            className="link"
             to={item.link}
           >
             <li className="sidebarListItem">
