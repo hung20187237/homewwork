@@ -22,11 +22,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={user ? <DashBoard/> : <Login />} />
+        <Route path="/" element={user ? <Settings/> : <Login />} />
+        <Route path='/dashboard' element={<DashBoard/>}/>
         <Route path='/post' element={<Post/>}/>
         <Route path='/createpost' element={<CreatePost/>}/>
         <Route path='/analysis' element={<Analysis/>}/>
-        <Route path='/settings' element={<Settings/>}/>
       </Routes>
     </Router>
   );
