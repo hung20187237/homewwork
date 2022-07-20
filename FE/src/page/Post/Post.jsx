@@ -35,7 +35,7 @@ export default function Post() {
 
   return (
     <>
-        <Topbar/>
+        {/* <Topbar/> */}
         <div className='homecontainer'>
           <Sidebar/>
           <div className='bodydashboard'>

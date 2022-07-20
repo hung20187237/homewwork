@@ -68,11 +68,7 @@ export default function Settings() {
 
   return (
     <>
-
-        {/* <Context>
-            <Topbar/>
-        </Context> */}
-        <Topbar/>
+        {/* <Topbar/> */}
         <div className='homecontainer'>
             <Sidebar/>
             <div className='mainsettings'>

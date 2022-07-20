@@ -22,7 +22,7 @@ export default function Sidebar() {
     },
     {
       title: "Setting",
-      link: "/",
+      link: "/settings",
     },
   ];
   return (

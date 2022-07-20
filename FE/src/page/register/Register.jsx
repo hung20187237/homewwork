@@ -39,7 +39,7 @@ export default function Register() {
             <span className='registertitle'>
                 Register
             </span>
-          <form className="registerBox" onClick={(handleClickRegister)}>
+          <form className="registerBox">
             <input
               placeholder="Username"
               required
@@ -68,7 +68,7 @@ export default function Register() {
               type="password"
               ref={passwordAgain}
             />
-            <button className="registerButton" type="submit" >
+            <button className="registerButton" type="submit"  onClick={(handleClickRegister)}>
               Sign Up
             </button>
             <button className="registerLoginButton" onClick={handleClickLoginAccount}>Log into Account</button>
