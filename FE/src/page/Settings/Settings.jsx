@@ -68,7 +68,7 @@ export default function Settings() {
 
   return (
     <>
-        {/* <Topbar/> */}
+        <Topbar/>
         <div className='homecontainer'>
             <Sidebar/>
             <div className='mainsettings'>

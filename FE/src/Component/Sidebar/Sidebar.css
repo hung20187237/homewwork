@@ -4,7 +4,7 @@
     overflow-y: scroll;
     position: sticky;
     top: 60px;
-    background-color:rgb(238, 238, 238);
+    background-color:rgb(200, 230, 255);
 }
 ::-webkit-scrollbar {
     width: 5px;

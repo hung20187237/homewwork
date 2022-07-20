@@ -17,7 +17,7 @@ export default function Topbar() {
   return (
       <>
         <div className='topbarcontainer'>
-          <div className='topbarlogo'>Logo</div>
+          <div className='topbarlogo'>Sync Facebook</div>
           <div className='topbaruser'>
             <LogoutIcon sx={{ fontSize: 32 }} onClick={() => handleClickLogout(dispatch)}/>
             <span className= "topbarname">{user.username}</span>

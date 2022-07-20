@@ -1,10 +1,39 @@
-import { Box } from '@mui/material'
+import {
+    Box,
+    Flex,
+    Image,
+    SimpleGrid,
+    Spacer,
+    Button,
+    Input,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    Text,
+
+  } from "@chakra-ui/react";
 import React from 'react'
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
+import { useState, useRef } from "react";
+import CancelIcon from '@mui/icons-material/Cancel';
+import {Player}
 import "./CreatePost.css"
 
 export default function CreatePost() {
+    const [mutifile, setMutifile] = useState(null);
+    const [desc, setDesc] = useState(null);
+
+    const MutipleFileChange = (files) => {
+        const listImg = Object.values(files);
+        console.log(listImg);
+        setMutifile(listImg);
+    }
+
+
+
   return (
     <>
         <Topbar/>
@@ -20,6 +49,7 @@ export default function CreatePost() {
                         <textarea
                             className="createpostInput"
                             placeholder="Post content..."
+                            onChange={(e) => setDesc(e.target.value)}
                         ></textarea>
                     </div>
 
@@ -31,6 +61,11 @@ export default function CreatePost() {
                             id="img"
                             multiple
                             accept=".png,.jpeg,.jpg"
+                            onChange={(e) => {
+                                console.log(e.target.files);             
+                                MutipleFileChange(e.target.files)
+                            }}
+                           
                         />
                     </label>
                     
@@ -42,6 +77,10 @@ export default function CreatePost() {
                             id="video"
                             multiple
                             accept=".mp4,.avi,.vmv"
+                            onChange={(e) => {
+                                console.log(e.target.files);             
+                                MutipleFileChange(e.target.files)
+                            }}
                         />
                     </label>
                 </div>
@@ -49,9 +88,32 @@ export default function CreatePost() {
                     <div className='createpostrightTop'>
                         <span className='statustop'>Publish</span>
                     </div>
-                    <div className='postrightBody'>
+                    <Box className='postrightBody'>
                         <span>Preview</span>
-                    </div>
+                        <Box>
+                            {desc && (
+                            <Text textAlign={'left'} padding={'4px'}>{desc}</Text>)}
+                            {mutifile && (
+                            <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
+                                {mutifile.map((img)=> {
+                                    if(mutifile.length === 1){
+                                        return (
+                                            <img className="reviewImg1" src={URL.createObjectURL(img)} alt="" />
+                                        )
+                                    }
+                                    if(mutifile.length > 1){
+                                        return (
+                                            <img className="reviewImg" src={URL.createObjectURL(img)} alt="" />
+                                        )
+                                    }
+                                   
+                                })}
+                                <CancelIcon className="reviewCancelImg" onClick={() => setMutifile(null)} />
+                            </Flex>
+                            
+                            )}
+                        </Box>
+                    </Box>
                 </div>
             </div>
             

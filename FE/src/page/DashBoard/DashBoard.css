@@ -1,5 +1,6 @@
 .homecontainer{
     display: flex;
+    background-color: rgb(245, 249, 255);
 }
 .bodydashboard{
     flex: 8;
