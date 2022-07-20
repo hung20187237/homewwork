@@ -19,19 +19,25 @@ import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
 import { useState, useRef } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
-import {Player}
 import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
     const [desc, setDesc] = useState(null);
+    const [source, setSource]  = useState(null);
+    const inputRef = React.useRef();
+
 
     const MutipleFileChange = (files) => {
         const listImg = Object.values(files);
         console.log(listImg);
         setMutifile(listImg);
     }
-
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        const url = URL.createObjectURL(file);
+        setSource(url);
+      };
 
 
   return (
@@ -78,8 +84,7 @@ export default function CreatePost() {
                             multiple
                             accept=".mp4,.avi,.vmv"
                             onChange={(e) => {
-                                console.log(e.target.files);             
-                                MutipleFileChange(e.target.files)
+                                handleFileChange(e.target.files)
                             }}
                         />
                     </label>
@@ -111,6 +116,33 @@ export default function CreatePost() {
                                 <CancelIcon className="reviewCancelImg" onClick={() => setMutifile(null)} />
                             </Flex>
                             
+                            )}
+                            {source && (
+                                <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
+                                    {source.map((vid)=> {
+                                    if(source.length === 1){
+                                        return (
+                                            <video
+                                                className="VideoInput_video"
+                                                width="86%"
+                                                controls
+                                                src={vid}
+                                            />
+                                        )
+                                    }
+                                    if(source.length > 1){
+                                        return (
+                                            <video
+                                                className="VideoInput_video"
+                                                width="86%"
+                                                controls
+                                                src={vid}
+                                            />
+                                        )
+                                    }
+                                   
+                                })}
+                                </Flex>
                             )}
                         </Box>
                     </Box>
