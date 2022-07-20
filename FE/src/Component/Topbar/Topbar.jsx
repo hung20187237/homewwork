@@ -7,18 +7,19 @@ import { useNavigate } from "react-router-dom";
 
 export default function Topbar() {
   const { user,dispatch } = useContext(Context)
-  let navigate = useNavigate()
+  // let navigate = useNavigate()
 
-  const handleClickLogout = (e)=>{
-    dispatch({ type: "LOG_OUT" });
-    navigate('/')
-  }
+  // const handleClickLogout = (e)=>{
+  //   dispatch({ type: "LOG_OUT" });
+  //   navigate('/')
+  // }
+  // onClick={handleClickLogout}
 
   return (
     <div className='topbarcontainer'>
       <div className='topbarlogo'>Logo</div>
       <div className='topbaruser'>
-        <LogoutIcon sx={{ fontSize: 32 }} onClick={handleClickLogout}/>
+        <LogoutIcon sx={{ fontSize: 32 }} />
         <span className= "topbarname">{user.username}</span>
       </div>
     
