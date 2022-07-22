@@ -13,9 +13,9 @@ export default function Login() {
 
   const handleClickLogin = async (dispatch) => {
       try{
+        console.log(1223)
         const res = await axios.post("http://localhost:8800/api/auth/login",{ email: email.current.value, password: password.current.value });
         dispatch({type: 'LOG_IN',payload: res.data});
-        navigate('/')
       } 
       catch(err){
         console.log(err)

@@ -33,10 +33,9 @@ export default function CreatePost() {
         console.log(listImg);
         setMutifile(listImg);
     }
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        const url = URL.createObjectURL(file);
-        setSource(url);
+    const handleFileChange = (files) => {
+        const listvideo = Object.values(files);
+        setSource(listvideo);
       };
 
 
@@ -126,17 +125,17 @@ export default function CreatePost() {
                                                 className="VideoInput_video"
                                                 width="86%"
                                                 controls
-                                                src={vid}
+                                                src={URL.createObjectURL(vid)}
                                             />
                                         )
                                     }
                                     if(source.length > 1){
                                         return (
                                             <video
-                                                className="VideoInput_video"
+                                                className="VideoInput_video1"
                                                 width="86%"
                                                 controls
-                                                src={vid}
+                                                src={URL.createObjectURL(vid)}
                                             />
                                         )
                                     }

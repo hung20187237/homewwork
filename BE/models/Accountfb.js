@@ -18,8 +18,10 @@ const AccountfbSchema = mongoose.Schema(
         type: String,
         required: true
     },
-
-    
+    pageId: {
+        type: String,
+        required: true
+    },
     access_token: {
         type: String,
         required: true,

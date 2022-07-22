@@ -95,3 +95,14 @@
     object-fit: cover;
     margin: auto;
 }
+.VideoInput_video{
+    width: 86%;
+    object-fit: cover;
+    margin: auto;
+}
+.VideoInput_video1{
+    width: 46%;
+    max-height: 400px;
+    object-fit: cover;
+    padding: 4px; 
+}
