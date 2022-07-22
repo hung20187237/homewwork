@@ -9,7 +9,7 @@ export default function Topbar() {
   const { user,dispatch } = useContext(Context)
   let navigate = useNavigate()
 
-  const handleClickLogout = ()=>{
+  const handleClickLogout = (e)=>{
     dispatch({ type: "LOG_OUT"});
     navigate('/')
   }
@@ -19,7 +19,7 @@ export default function Topbar() {
         <div className='topbarcontainer'>
           <div className='topbarlogo'>Sync Facebook</div>
           <div className='topbaruser'>
-            <LogoutIcon sx={{ fontSize: 32 }} onClick={() => handleClickLogout(dispatch)}/>
+            <LogoutIcon sx={{ fontSize: 32 }} onClick={handleClickLogout}/>
             <span className= "topbarname">{user.username}</span>
           </div>
         

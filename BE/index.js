@@ -9,7 +9,7 @@ const morgan = require("morgan");
 const multer = require("multer");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
-const accountRoute = require('./routes/Accountfb')
+const accountRoute = require('./routes/Accountfb');
 const path = require("path");
 
 

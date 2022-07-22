@@ -17,58 +17,71 @@ import {
   } from "@chakra-ui/react";
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
-import { height } from '@mui/system';
+import FacebookLogin from "react-facebook-login";
 import AccountCard from '../../Component/AccountCard/AccountCard';
 import { useContext,useRef,useState,useEffect } from "react";
-import { Context } from '../../context/Context';
+import { Context, ContextProvider } from '../../context/Context';
+import axios from "axios";
+
 
 
 export default function Settings() {
-//     window.fbAsyncInit = function() {
-//         window.FB.init({
-//           appId      : '357364879892123',
-//           cookie     : true,
-//           xfbml      : true,
-//           version    : 'v14.0',
-//         });
+    const {user} = useContext(Context)
+    const username = user.username;
+    const [accounts, setAccounts] = useState([]);
+
+    useEffect(() => {
+      const fetchAccounts = async () => {
+        const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
           
-//         window.FB.AppEvents.logPageView();   
-//         window.FB.getLoginStatus(function(response) {
-//             statusChangeCallback(response);
-//         }); 
-//     };
+        setAccounts(
+            res.data.sort((p1, p2) => {
+                return new Date(p2.createdAt) - new Date(p1.createdAt);
+            })
+        );
+      };
+      fetchAccounts();
+    }, [username]);
+    console.log(accounts)
+    const [account, setAccount]  = useState({  
+        isLoggedIn: false,
+        userID: "",
+        name: "",
+        accessToken: "",
+        picture: ""
+    });
+  
+    const responseFacebook = async(response) => {
+        console.log(response);
+        if (response.status !== "unknown") {
+            setAccount({
+            isLoggedIn: true,
+            userID: response.userID,
+            name: response.name,
+            accessToken: response.accessToken,
+            picture: response.picture.data.url
+            });
+            const newAccount = {
+            userId: user._id,
+            accountname: response.name,
+            avatar: response.picture.data.url,
+            accountId: response.userID,
+            accessToken: response.accessToken
+            }
+            console.log(newAccount)
+            try {
+                await axios.post("http://localhost:8800/api/account", newAccount);
+                window.location.reload();
+            }   catch (err) {}
+        }
 
-//     function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-//         console.log('statusChangeCallback');
-//         console.log(response);                   // The current login status of the person.
-//         if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-//           testAPI();  
-//         } else {                                 // Not logged into your webpage or we are unable to tell.
-//           document.getElementById('status').innerHTML = 'Please log ' +
-//             'into this webpage.';
-//         }
-//     }
+    };
+    
 
-//     (function(d, s, id){
-//         var js, fjs = d.getElementsByTagName(s)[0];
-//         if (d.getElementById(id)) {return;}
-//         js = d.createElement(s); js.id = id;
-//         js.src = "https://connect.facebook.net/en_US/sdk.js";
-//         fjs.parentNode.insertBefore(js, fjs);
-//     }(document, 'script', 'facebook-jssdk'));
-
-//    function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-//     console.log('Welcome!  Fetching your information.... ');
-//     window.FB.api('/me', function(response) {
-//       console.log('Successful login for: ' + response.name);
-//       document.getElementById('status').innerHTML =
-//         'Thanks for logging in, ' + response.name + '!';
-//     });
-//   }
 
   return (
     <>
-        <Topbar/>
+        <ContextProvider><Topbar/></ContextProvider>
         <div className='homecontainer'>
             <Sidebar/>
             <div className='mainsettings'>
@@ -79,14 +92,21 @@ export default function Settings() {
                     </TabList>
                     <TabPanels>
                         <TabPanel>
-                            <AccountCard/>
-                            <AccountCard/>
+                            {accounts.map((a) => {
+                                return (
+                                <AccountCard  key={a._id} account={a}/>
+                                )
+                            })} 
                                
                             <Box justifyContent={'center'} display='flex' marginTop={"8vh"}>
-                                <Button padding={'10px 24px'} borderRadius='10px'
-                                    fontSize={18}
-                                >Add</Button>
-                                <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false">Add</div>
+                                <FacebookLogin
+                                    appId="357364879892123"
+                                    autoLoad={true}
+                                    fields="id,name,email,picture"
+                                    callback={responseFacebook}
+                                    onClick = {responseFacebook}
+                                    icon="fa-facebook"
+                                ></FacebookLogin>
                             </Box>
                             
                         </TabPanel>

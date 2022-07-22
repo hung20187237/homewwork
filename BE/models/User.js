@@ -24,10 +24,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    accountfb: {
-      type: Array,
-      default: []
-    },
   },
   { timestamps: true }
 );

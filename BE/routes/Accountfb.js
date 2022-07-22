@@ -6,6 +6,7 @@ const Account = require('../models/Accountfb')
 //add Account 
 router.post("/", async (req, res) => {
   const newAccount = new Account(req.body);
+  console.log(1233)
   try {
     const savedAccount = await newAccount.save();
     res.status(200).json(savedAccount);

@@ -12,28 +12,47 @@ import {
     TabPanels,
     Tabs,
     Text,
-
+    Select
   } from "@chakra-ui/react";
 import React from 'react'
+import FbImageLibrary from 'react-fb-image-grid'
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
-import { useState, useRef } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Context} from '../../context/Context';
+import axios from "axios";
 import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
     const [desc, setDesc] = useState(null);
     const [source, setSource]  = useState(null);
-    const inputRef = React.useRef();
+    const {user} = useContext(Context)
+    const username = user.username;
+    const [accounts, setAccounts] = useState([]);
+
+    useEffect(() => {
+      const fetchAccounts = async () => {
+        const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
+          
+        setAccounts(
+            res.data.sort((p1, p2) => {
+                return new Date(p2.createdAt) - new Date(p1.createdAt);
+            })
+        );
+      };
+      fetchAccounts();
+    }, [username]);
 
 
     const MutipleFileChange = (files) => {
-        const listImg = Object.values(files);
-        console.log(listImg);
-        setMutifile(listImg);
+        const listImg =Object.values(files)
+        const listUrl = listImg.map( img => URL.createObjectURL(img));
+        setMutifile(listUrl);
     }
     const handleFileChange = (files) => {
+        
         const listvideo = Object.values(files);
         setSource(listvideo);
       };
@@ -47,7 +66,20 @@ export default function CreatePost() {
             <div className='bodycreatepost'>
                 <div className='createpostleft'>
                     <div className='createpostTop'>
-                        <span className='accountnametop'>Account name</span>
+
+                        <Box padding={'10px 28px'} marginTop='4vh' border={'1px solid'}>
+                            <Select placeholder='Published' 
+                               size={'lg'} 
+                               variant='outline'
+                            >
+                                
+                                {accounts.map((a) => {
+                                    return (
+                                        <option value={a.accountname}>{a.accountname}</option>
+                                    )
+                                })} 
+                            </Select>
+                        </Box>
                         <button className='buttonselect'>Select teamviewer</button>
                     </div>
                     <div>
@@ -66,8 +98,7 @@ export default function CreatePost() {
                             id="img"
                             multiple
                             accept=".png,.jpeg,.jpg"
-                            onChange={(e) => {
-                                console.log(e.target.files);             
+                            onChange={(e) => {           
                                 MutipleFileChange(e.target.files)
                             }}
                            
@@ -90,7 +121,22 @@ export default function CreatePost() {
                 </div>
                 <div className='createpostright'>
                     <div className='createpostrightTop'>
-                        <span className='statustop'>Publish</span>
+                        <Box
+                            float={'right'}
+                            marginTop='4vh'
+                            width={'200px'}
+                        >
+                            <Select placeholder='Published' 
+                               size={'lg'} 
+                               variant='outline'
+                            >
+                                <option value='Scheduled'>Scheduled</option>
+                                <option value='Approcal'>Approcal</option>
+                                <option value='Failed'>Failed</option>
+                                <option value='Draft'>Draft</option>
+                            </Select>
+                        </Box>
+                        
                     </div>
                     <Box className='postrightBody'>
                         <span>Preview</span>
@@ -99,19 +145,7 @@ export default function CreatePost() {
                             <Text textAlign={'left'} padding={'4px'}>{desc}</Text>)}
                             {mutifile && (
                             <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
-                                {mutifile.map((img)=> {
-                                    if(mutifile.length === 1){
-                                        return (
-                                            <img className="reviewImg1" src={URL.createObjectURL(img)} alt="" />
-                                        )
-                                    }
-                                    if(mutifile.length > 1){
-                                        return (
-                                            <img className="reviewImg" src={URL.createObjectURL(img)} alt="" />
-                                        )
-                                    }
-                                   
-                                })}
+                                <FbImageLibrary images={mutifile} countFrom={3} />
                                 <CancelIcon className="reviewCancelImg" onClick={() => setMutifile(null)} />
                             </Flex>
                             
@@ -119,28 +153,28 @@ export default function CreatePost() {
                             {source && (
                                 <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
                                     {source.map((vid)=> {
-                                    if(source.length === 1){
-                                        return (
-                                            <video
-                                                className="VideoInput_video"
-                                                width="86%"
-                                                controls
-                                                src={URL.createObjectURL(vid)}
-                                            />
-                                        )
-                                    }
-                                    if(source.length > 1){
-                                        return (
-                                            <video
-                                                className="VideoInput_video1"
-                                                width="86%"
-                                                controls
-                                                src={URL.createObjectURL(vid)}
-                                            />
-                                        )
-                                    }
-                                   
-                                })}
+                                        if(source.length === 1){
+                                            return (
+                                                <video
+                                                    className="VideoInput_video"
+                                                    width="86%"
+                                                    controls
+                                                    src={URL.createObjectURL(vid)}
+                                                />
+                                            )
+                                        }
+                                        if(source.length > 1){
+                                            return (
+                                                <video
+                                                    className="VideoInput_video1"
+                                                    controls
+                                                    src={URL.createObjectURL(vid)}
+                                                />
+                                            )
+                                        }
+                                    
+                                    })}
+                                    <CancelIcon className="reviewCancelImg" onClick={() => setSource(null)} />
                                 </Flex>
                             )}
                         </Box>
