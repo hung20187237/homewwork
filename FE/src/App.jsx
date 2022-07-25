@@ -27,7 +27,6 @@ function App() {
         <Route path='/post' element={<Post/>}/>
         <Route path='/createpost' element={<CreatePost/>}/>
         <Route path='/analysis' element={<Analysis/>}/>
-        {/* <Route path="/settings" element={<Settings/>}/> */}
       </Routes>
     </Router>
 

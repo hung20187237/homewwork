@@ -16,7 +16,6 @@ export default function LoginLayout() {
       try{
         console.log(1223)
         const res = await axios.post("http://localhost:8800/api/auth/login",{ email: email.current.value, password: password.current.value });
-        console.log(123)
         dispatch({type: 'LOG_IN',payload: res.data});
         navigate('/')
        

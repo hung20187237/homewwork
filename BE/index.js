@@ -10,6 +10,7 @@ const multer = require("multer");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const accountRoute = require('./routes/Accountfb');
+const postRoute = require('./routes/post')
 const path = require("path");
 
 
@@ -34,9 +35,9 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
   },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
+  filename:  (req, file, cb)=> {
+    cb(null, Date.now()+'_' +file.originalname)
+  }
 });
 
 const upload = multer({ storage: storage });
@@ -49,9 +50,9 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 });
 
 const mutiupload = multer({ storage: storage })
-app.post("/api/mutiupload", mutiupload.array("file",12), async (req, res) => {
+app.post("/api/mutiupload", mutiupload.array("images",12), async (req, res) => {
   try {
-    return res.status(200).json("File uploded successfully");
+    return res.status(200).json({data:"File uploaded successfully",file:req.files});
   } catch (error) {
     console.log(error);
     if (error.code === "LIMIT_UNEXPECTED_FILE") {
@@ -61,10 +62,10 @@ app.post("/api/mutiupload", mutiupload.array("file",12), async (req, res) => {
   }
 })
 
-
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/account", accountRoute)
+app.use("/api/post", postRoute)
 
 
 app.listen(8800, () => {

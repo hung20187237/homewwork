@@ -30,6 +30,7 @@ export default function Settings() {
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
 
+
     useEffect(() => {
       const fetchAccounts = async () => {
         const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
@@ -42,6 +43,7 @@ export default function Settings() {
       };
       fetchAccounts();
     }, [username]);
+
     console.log(accounts)
     const [account, setAccount]  = useState({  
         isLoggedIn: false,
@@ -81,7 +83,7 @@ export default function Settings() {
 
   return (
     <>
-        <ContextProvider><Topbar/></ContextProvider>
+        <Topbar/>
         <div className='homecontainer'>
             <Sidebar/>
             <div className='mainsettings'>
@@ -104,7 +106,6 @@ export default function Settings() {
                                     autoLoad={true}
                                     fields="id,name,email,picture"
                                     callback={responseFacebook}
-                                    onClick = {responseFacebook}
                                     icon="fa-facebook"
                                 ></FacebookLogin>
                             </Box>

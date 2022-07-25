@@ -15,6 +15,21 @@ router.post("/", async (req, res) => {
   }
 });
 
+//update a account
+router.put("/:id", async (req, res) => {
+  try {
+    const account = await Account.findById(req.params.id);
+    if (account.userId === req.body.userId) {
+      await account.updateOne({ $set: req.body });
+      res.status(200).json("the account has been updated");
+    } else {
+      res.status(403).json("you can update only your account");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //delete a account
 router.delete("/:id", async (req, res) => {
   try {
@@ -40,5 +55,13 @@ router.get("/accountfb/:username", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
+//get a account
+router.get("/:id", async (req, res) => {
+  try {
+    const account = await Account.findById(req.params.id);
+    res.status(200).json(account);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;
