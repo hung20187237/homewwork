@@ -16,7 +16,11 @@
     "antd": "^4.21.7",
     "axios": "^0.27.2",
     "facebook-js-sdk": "^0.3.4",
+    "fb": "^2.0.0",
     "framer-motion": "^6.4.3",
+    "fs": "^0.0.1-security",
+    "imgur": "^2.2.0",
+    "imgur-v2": "^0.2.1",
     "ngrok": "^4.3.1",
     "node": "^18.5.0",
     "npm": "^8.14.0",
@@ -54,4 +58,13 @@
       "last 1 safari version"
     ]
   }
+  "browser": {
+    "crypto": false,
+    "fs": false,
+    "path": false,
+    "os": false,
+    "net": false,
+    "stream": false,
+    "tls": false
+  },
 }
