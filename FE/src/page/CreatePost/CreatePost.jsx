@@ -25,7 +25,6 @@ import { Context} from '../../context/Context';
 import axios from "axios";
 import "./CreatePost.css"
 import { ImgurClient } from 'imgur';
-import fs from 'fs'
 
 
 
@@ -34,9 +33,9 @@ import fs from 'fs'
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
     const [desc, setDesc] = useState(null);
-    const [access, setAccess] = useState("EAAFFBX64npsBAIjOnOOT9DGjQHvaxQFgYmRUi5f2LSCMk9zfhSlsyYwjmNfhDZCsrGFmlyqfghejuY5TY2rZCh8IkKbzTRx9sZBRRjVNUuBajZAeRGtuzKnAkAwhRZALILrZCMdpRh0wVDurZAbUyazGALZCExkk71OzGMWatZBpRvHajNg5h0nFO")
+    const [access, setAccess] = useState("EAAFFBX64npsBANZC53IUFrYX0WBykmToV3SqAR2BI1mCHTRUjxtN1Na7lazZCkWcgrad4BzVL9qubfNYrZAw3jAaG8qm6ZCBTuJVp9DZCyopY2eyLn0FZAc3QZA5ar95nqZCAEKHEIDZB5ZCJ4KGvbrUqwe93pEqp3oHeTZB0H87l5ZAg5O21oZCRhrnCiBaqrRXtMQEt10d2eB8nEAZDZD")
     const [source, setSource]  = useState(null);
-    const [imageUrl, setImageUrl] = useState([])
+    const [url, setlistUrl] = useState([null])
     const {user} = useContext(Context)
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
@@ -47,19 +46,6 @@ export default function CreatePost() {
     const status = useRef()
     const account = useRef()
 
-    const client = new ImgurClient({
-        clientId: "225600e2fe06d7b",
-        clientSecret: "57827b9020f66497c262f0b365a51439bbd583bf",
-        refreshToken: process.env.REFRESH_TOKEN,
-    });
-    const ShowUrlImage1 = async () => {
-        const response = await client.upload({
-            image: fs.createReadStream(mutiupload),
-            type: 'stream',
-        });
-        console.log(response.data);
-    }
-     
 
     useEffect(() => {
       const fetchAccounts = async () => {
@@ -74,45 +60,51 @@ export default function CreatePost() {
       fetchAccounts();
     }, [username]);
 
-    const ShowUrlImage = async () => {
-        
-        await axios({
-          method: "post",
-          url: "https://api.imgur.com/3/image",
-          headers: {
-            Authorization: `Client-ID 225600e2fe06d7b`
-          },
-          data: mutiupload.current.files[0]
-        })
-          .then((res) => {
-            console.log(res.data.data.link);
-            setImageUrl(res.data.data.link);
-            alert("Save Your Changes");
-       
-          })
-          .catch((err) => {
+    const ShowUrlImage = async() => {
+        let choseImage = [];
+          try {
+            if (Array.isArray(mutiupload)) {
+              const uploadArray = mutiupload.map(async item => {
+                const resultUpload = await axios({
+                  method: "post",
+                  url: "https://api.imgur.com/3/image",
+                  headers: {
+                    Authorization: `Client-ID 225600e2fe06d7b`
+                  },
+                  data :item
+                }) 
+                console.log(resultUpload)// bỏ hết then đi
+                if (resultUpload.status === 200) {
+                  return resultUpload.data.data.link;
+                }
+              });
+              choseImage = await Promise.all(uploadArray);
+              console.log(choseImage)
+              setlistUrl(choseImage)
+    
+            }
+          } catch (error) {
             alert("image not uploaded");
-          });
-      };
+          }
+        
+    }
 
     const postRandomQuote = async (e) => {
         e.preventDefault();
-        const newData = {
-            access_token: access,
-            message: content.current.value,
-        }
+        
         const newData1 = {
             access_token: access,
             message: content.current.value,
             link: mutifile[0],
         }
         if(files.length === 1){
-            // const mutiURL1 = Object.assign({}, mutiupload)
-            console.log(files)
-            const reader = new FileReader()
-            const mutiURL = reader.readAsDataURL(files)
-            console.log(mutiURL)
-            newData.url= mutiURL; 
+            const newData = {
+                access_token: access,
+                message: content.current.value,
+                url: url[0]
+            }
+            
+            console.log(newData)
             try {
                 await axios.post("https://graph.facebook.com/100547109409842/photos?", newData)
                 .then(
@@ -126,8 +118,8 @@ export default function CreatePost() {
                 })
             }catch (err) { }
         }
-        if(mutifile.length > 1){
-            const child_attachments =  mutifile.map(v => ({ link: v, picture: v  }))
+        if(files.length > 1){
+            const child_attachments =  url.map(v => ({ link: v, picture: v  }))
             console.log(child_attachments)
             newData1.child_attachments = child_attachments
             try {
@@ -216,7 +208,12 @@ export default function CreatePost() {
         const listvideo = Object.values(files);
         setSource(listvideo);
     };
-
+    // const someFunc = (e) => {
+    //     e.preventDefault();
+    //     handlePostSubmit();
+    //     ShowUrlImage();
+    //     postRandomQuote();
+    // }
 
     
 
@@ -302,16 +299,9 @@ export default function CreatePost() {
                                 border='1px solid'
                                 borderRadius={20}
                                 background={'rgb(200, 230, 255)'}
-                                onClick={handlePostSubmit}
+                                onClick={handleFileChange}
                             >Share</Button>
-                            <Button marginTop={50} 
-                                height='40px'
-                                width={'70%'}
-                                border='1px solid'
-                                borderRadius={20}
-                                background={'rgb(200, 230, 255)'}
-                                onClick={ShowUrlImage1}
-                            >Share</Button>
+
                         </form>
                     </div>
                     <div className='createpostright'>
