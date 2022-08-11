@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+const jwt = require("jsonwebtoken");
+let Vimeo = require('vimeo').Vimeo;
+let client = new Vimeo("3aa5d5504bc93e11d9363ae7229d48e6b14465a0", "LU9vqPHaulHnCfVe0d8rZu+6SUvuwezvi3A7ivCNuILQEQi7V0o5ezEsirLAOlNZnbzkT/i3drIPZxMsR5/a25Nwfy2dQ6dMQTa6hlMyJQokrd8UbtddHcEToFSDEgy6", "037de32f62aac0c897e7d3958904f5f9");
 
 const cors = require('cors')
 const mongoose = require("mongoose");
@@ -39,6 +42,19 @@ const storage = multer.diskStorage({
     cb(null, Date.now()+'_' +file.originalname)
   }
 });
+
+
+app.get("/get-token", (req, res) => {
+  const API_KEY = process.env.VIDEOSDK_API_KEY;
+  const SECRET_KEY = process.env.VIDEOSDK_SECRET_KEY;
+  const options = { expiresIn: "10m", algorithm: "HS256" };
+  const payload = {
+    apikey: API_KEY,
+  };
+  const token = jwt.sign(payload, SECRET_KEY, options);
+  res.json({ token });
+});
+
 
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {

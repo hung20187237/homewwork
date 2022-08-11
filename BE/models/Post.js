@@ -19,8 +19,7 @@ const PostSchema = new mongoose.Schema(
       default: [],
     },
     video: {
-        type: Array,
-        default: [],
+      type: String,
     },
     status: {
       type: String,
