@@ -32,7 +32,7 @@ import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
-    const [access, setAccess] = useState("EAAFFBX64npsBADZAZBktS6OBBZCvOwMDgL3TwT18omFfHgA8K0Cm15vkn8nLXfB3ZC7ywEDaZBxTEUZAMlgmvG0ba0YOc5rSWj922h07kQQgka8mZCBspvXFeg5mbZAZCGWy3jpCjxYCxyxVpJjHuzlvLFiXb6MuI4eAYVQL8QlWLlEajZB1WWLW9YSBmkstZBcqUZCTYv87ZBzPRZCQZDZD")
+    const [access, setAccess] = useState("EAAFFBX64npsBAAqccSIJ9ZATDGV98inSUxdB9gFepJNPRWpeiOzYGS1K33rMmRnFIXldyC6ehqHZCzATwNdhglw7wGte2JzyEfhzYzWHZBwzGghYjZAxsTyBgryNfxSvCR7B9QZCueOSID5Arpk42vaAjiu4QRZA8b1k5WwklMlnA0Gbtd8SeN3FlZAnYMeP5ZAS4kXidsefZAAZDZD")
     const [source, setSource]  = useState(null);
     const [desc, setDesc] = useState(null)
     // const [token, setToken]  = useState(null)
@@ -40,13 +40,13 @@ export default function CreatePost() {
     const {user} = useContext(Context)
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
-    const [files, setFiles] = useState();
+    const [files, setFiles] = useState(null);
     const [mutiupload, setMutiupload] = useState(null);
     const { user: currentUser, notifyFlag, dispatch } = useContext(Context);
     const content = useRef()
     const status = useRef()
     const account = useRef()
-    const accessToken1 = 'e0d88122a6cb4b350c24a52ed80be9d3';
+    const accessToken1 = 'f64c4f0232adb0cee2d5bfeb3cd3fd8d';
     const [videoUrl, setVideoUrl] = useState('');
 
 
@@ -73,50 +73,73 @@ export default function CreatePost() {
         'Content-Type': 'application/json'
     };
 
-    const handleChange = async eventObject => {
-        // Get the selected file from the input element
-        // const file = eventObject.target.files[0];
-        const fileName = source.name;
-        const fileSize = source.size.toString();
-        console.log(source, fileName, fileSize);
+    // const handleChange = async eventObject => {
+    //     // Get the selected file from the input element
+    //     // const file = eventObject.target.files[0];
+    //     const fileName = source.name;
+    //     const fileSize = source.size.toString();
+    //     console.log(source, fileName, fileSize);
     
-        const response = await axios({
-          method: 'post',
-          url: `https://api.vimeo.com/me/videos`,
-          headers: headerPost,
-          data: {
-            upload: {
-              approach: 'tus',
-              size: fileSize
-            }
-          }
-        });
+    //     const response = await axios({
+    //       method: 'post',
+    //       url: `https://api.vimeo.com/me/videos`,
+    //       headers: headerPost,
+    //       data: {
+    //         upload: {
+    //           approach: 'tus',
+    //           size: fileSize
+    //         }
+    //       }
+    //     });
 
-        console.log(response)
-        const upload = new tus.Upload(source, {
-            endPoint: 'https://api.vimeo.com/me/videos',
-            uploadUrl: response.data.upload.upload_link,
-            retryDelays: [0, 3000, 5000, 10000, 20000],
-            metadata: {
-            filename: source.name,
-            filetype: source.type
-            },
-            headers: {},
-            onError: function(error) {
-            console.log('Failed because: ' + error);
-            },
-            onProgress: function(bytesUploaded, bytesTotal) {
-            let percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
-            console.log(bytesUploaded, bytesTotal, percentage + '%');
-            },
-            onSuccess: function() {
-            console.log('Download %s from %s', upload.file.name, upload.url);
-            setVideoUrl(response.data.link);
-            }
-        });
-        //   Start the upload
-        upload.start();  
-    }
+    //     console.log(response)
+    //     const upload = new tus.Upload(source, {
+    //         endPoint: 'https://api.vimeo.com/me/videos',
+    //         uploadUrl: response.data.upload.upload_link,
+    //         retryDelays: [0, 3000, 5000, 10000, 20000],
+    //         metadata: {
+    //         filename: source.name,
+    //         filetype: source.type
+    //         },
+    //         headers: {},
+    //         onError: function(error) {
+    //         console.log('Failed because: ' + error);
+    //         },
+    //         onProgress: function(bytesUploaded, bytesTotal) {
+    //         let percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
+    //         console.log(bytesUploaded, bytesTotal, percentage + '%');
+    //         },
+    //         onSuccess: function() {
+    //         console.log('Download %s from %s', upload.file.name, upload.url);
+    //         setVideoUrl(response.data.link);
+    //         }
+    //     });
+    //     //   Start the upload
+    //     upload.start();  
+    //     console.log((response.data.link))
+        
+    // }
+    const ShowUrlvideo = async(e) => {
+        const src = new FormData()
+        console.log(source)
+        const fileName = source.name;
+        src.append("name", fileName);
+        src.append("file", source);
+        src.append("access_token", access)
+        src.append("description", content.current.value)
+        console.log(src)
+        try {
+            await axios.post("https://graph.facebook.com/100547109409842/videos?", src)
+            .then(
+                res => {
+                    const result = res.data;
+                    console.log(result);
+                    alert("Success!");
+                })
+        } catch (err) {
+            alert("video not uploaded")
+        }
+    }   
 
     const ShowUrlImage = async(e) => {
         let choseImage = [];
@@ -142,6 +165,7 @@ export default function CreatePost() {
         } catch (error) {
             alert("image not uploaded");
         }
+
         const postRandomQuote = async (e) => {
             const newData1 = {
                 access_token: access,
@@ -186,9 +210,12 @@ export default function CreatePost() {
                     })
                 }catch (err) { }
             }
+            if(files.length === 0){
+                
+            }
         };
         postRandomQuote.call()
-    
+        // window.location.reload();
     }
 
 
@@ -226,6 +253,7 @@ export default function CreatePost() {
             const fileName = Date.now() + source.name;
             data.append("name", fileName);
             data.append("file", source);
+            console.log(data)
             newPost.video = fileName;
             console.log(newPost);
             try {
@@ -244,13 +272,15 @@ export default function CreatePost() {
     const MutipleFileChange = (files) => {
         console.log(files)
         const listImg =Object.values(files)
+        const listUrl = listImg.map( img => URL.createObjectURL(img))
         setFiles(files)
+        setMutifile(listUrl)
         setMutiupload(listImg)
     }
     const someFunc = (e) => {
-        handlePostSubmit();
-        // ShowUrlImage();
-        handleChange()
+        // handlePostSubmit();
+        ShowUrlImage();
+        // handleChange()
     }
 
     
@@ -263,7 +293,7 @@ export default function CreatePost() {
                 <Sidebar/>
                 <div className='bodycreatepost'>
                     <div className='createpostleft'>
-                        <form className="reviewBottom">
+                        <form className="reviewBottom" encType="multipart/form-data">
                             <div className='createpostTop'>
 
                                 <Select placeholder= 'UserAccount'
@@ -326,11 +356,10 @@ export default function CreatePost() {
                                     accept=".mp4,.avi,.vmv"
                                     onChange={(e) => {
                                         setSource(e.target.files[0])
-                                        
                                     }}
                                 />
                             </label>
-                            <input onChange={handleChange} type='file' />
+                            <Button onClick={handlePostSubmit}>ADD </Button>
 
                             <Button marginTop={50} 
                                 height='40px'
@@ -347,7 +376,7 @@ export default function CreatePost() {
                                 borderRadius={20}
                                 background={'rgb(200, 230, 255)'}
                                 onClick={(e) => {         
-                                    ShowUrlImage();                                
+                                    ShowUrlvideo();                                
                                 }}
                             >Share</Button>
 
@@ -379,7 +408,7 @@ export default function CreatePost() {
                             <Box>
                                 {desc && (
                                 <Text textAlign={'left'} padding={'4px'}>{desc}</Text>)}
-                                {mutifile && (
+                                {mutifile &&(
                                 <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
                                     <FbImageLibrary images={mutifile} countFrom={5} />
                                     <CancelIcon className="reviewCancelImg" onClick={() => setMutifile(null)} />

@@ -92,6 +92,7 @@
     width: 86%;
     object-fit: cover;
     margin: auto;
+    max-height: 86%;
 }
 .VideoInput_video1{
     width: 46%;
