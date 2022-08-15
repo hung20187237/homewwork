@@ -47,4 +47,15 @@ router.get("/:postId", async (req, res) => {
   }
 });
 
+
+//get account's all posts
+router.get("/profile/:accountname", async (req, res) => {
+  try {
+    const posts = await Post.find({ accountId: req.params.accountId });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

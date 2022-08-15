@@ -32,7 +32,7 @@ import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
-    const [access, setAccess] = useState("EAAFFBX64npsBAAqccSIJ9ZATDGV98inSUxdB9gFepJNPRWpeiOzYGS1K33rMmRnFIXldyC6ehqHZCzATwNdhglw7wGte2JzyEfhzYzWHZBwzGghYjZAxsTyBgryNfxSvCR7B9QZCueOSID5Arpk42vaAjiu4QRZA8b1k5WwklMlnA0Gbtd8SeN3FlZAnYMeP5ZAS4kXidsefZAAZDZD")
+    const [access, setAccess] = useState("EAAFFBX64npsBAAaicyuFZCAHHZBnYmrtaLZCtrToVQfdweXqoPiMW15aUwNQZAMH5BYpgkDLgkElZBoYaPvp6ZAKGnbrQZBjeuuEkblJde3RAyO27T5TtQglIj6G4DsUbhodvpujVeemW3oop7CCqjmzN0zIZBcZAXGLcNNKxVPBnlavGKwtOQhy7v1GnFn0vxMROqKQpma3hoQZDZD")
     const [source, setSource]  = useState(null);
     const [desc, setDesc] = useState(null)
     // const [token, setToken]  = useState(null)
@@ -46,8 +46,6 @@ export default function CreatePost() {
     const content = useRef()
     const status = useRef()
     const account = useRef()
-    const accessToken1 = 'f64c4f0232adb0cee2d5bfeb3cd3fd8d';
-    const [videoUrl, setVideoUrl] = useState('');
 
 
 
@@ -67,59 +65,8 @@ export default function CreatePost() {
 
 
 
-    const headerPost = {
-        Accept: 'application/vnd.vimeo.*+json;version=3.4',
-        Authorization: `bearer ${accessToken1}`,
-        'Content-Type': 'application/json'
-    };
-
-    // const handleChange = async eventObject => {
-    //     // Get the selected file from the input element
-    //     // const file = eventObject.target.files[0];
-    //     const fileName = source.name;
-    //     const fileSize = source.size.toString();
-    //     console.log(source, fileName, fileSize);
-    
-    //     const response = await axios({
-    //       method: 'post',
-    //       url: `https://api.vimeo.com/me/videos`,
-    //       headers: headerPost,
-    //       data: {
-    //         upload: {
-    //           approach: 'tus',
-    //           size: fileSize
-    //         }
-    //       }
-    //     });
-
-    //     console.log(response)
-    //     const upload = new tus.Upload(source, {
-    //         endPoint: 'https://api.vimeo.com/me/videos',
-    //         uploadUrl: response.data.upload.upload_link,
-    //         retryDelays: [0, 3000, 5000, 10000, 20000],
-    //         metadata: {
-    //         filename: source.name,
-    //         filetype: source.type
-    //         },
-    //         headers: {},
-    //         onError: function(error) {
-    //         console.log('Failed because: ' + error);
-    //         },
-    //         onProgress: function(bytesUploaded, bytesTotal) {
-    //         let percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
-    //         console.log(bytesUploaded, bytesTotal, percentage + '%');
-    //         },
-    //         onSuccess: function() {
-    //         console.log('Download %s from %s', upload.file.name, upload.url);
-    //         setVideoUrl(response.data.link);
-    //         }
-    //     });
-    //     //   Start the upload
-    //     upload.start();  
-    //     console.log((response.data.link))
-        
-    // }
-    const ShowUrlvideo = async(e) => {
+  
+    const PostUrlvideo = async(e) => {
         const src = new FormData()
         console.log(source)
         const fileName = source.name;
@@ -134,7 +81,7 @@ export default function CreatePost() {
                 res => {
                     const result = res.data;
                     console.log(result);
-                    alert("Success!");
+                    alert("upload video Success!");
                 })
         } catch (err) {
             alert("video not uploaded")
@@ -164,6 +111,7 @@ export default function CreatePost() {
             }
         } catch (error) {
             alert("image not uploaded");
+            window.location.reload();
         }
 
         const postRandomQuote = async (e) => {
@@ -186,11 +134,12 @@ export default function CreatePost() {
                     res => {
                         const result = res.data;
                         console.log(result);
-                        alert("Success!");
+                        alert("upload image Success!");
                     },
                         error => {
                         console.log(error);
                     })
+                    window.location.reload();
                 }catch (err) { }
             }
             if(files.length > 1){
@@ -203,11 +152,12 @@ export default function CreatePost() {
                     res => {
                         const result = res.data;
                         console.log(result);
-                        alert("Success!");
+                        alert("upload images Success!");
                     },
                         error => {
                         console.log(error);
                     })
+                    window.location.reload();
                 }catch (err) { }
             }
             if(files.length === 0){
@@ -215,7 +165,7 @@ export default function CreatePost() {
             }
         };
         postRandomQuote.call()
-        // window.location.reload();
+        
     }
 
 
@@ -226,6 +176,7 @@ export default function CreatePost() {
             desc: content.current.value, 
             status: status.current.value 
         }
+        console.log(newPost)
         if (mutiupload) {
             const data = new FormData();
             let fileName = [];
@@ -263,7 +214,7 @@ export default function CreatePost() {
         try {
           console.log(newPost)
           await axios.post("http://localhost:8800/api/post", newPost);
-          window.location.reload();
+        //   window.location.reload();
         } catch (err) {
           console.log(err)
         }
@@ -278,9 +229,10 @@ export default function CreatePost() {
         setMutiupload(listImg)
     }
     const someFunc = (e) => {
-        // handlePostSubmit();
+        handlePostSubmit();
         ShowUrlImage();
-        // handleChange()
+        PostUrlvideo();
+        
     }
 
     
@@ -359,8 +311,6 @@ export default function CreatePost() {
                                     }}
                                 />
                             </label>
-                            <Button onClick={handlePostSubmit}>ADD </Button>
-
                             <Button marginTop={50} 
                                 height='40px'
                                 width={'70%'}
@@ -376,7 +326,7 @@ export default function CreatePost() {
                                 borderRadius={20}
                                 background={'rgb(200, 230, 255)'}
                                 onClick={(e) => {         
-                                    ShowUrlvideo();                                
+                                    PostUrlvideo();                                
                                 }}
                             >Share</Button>
 

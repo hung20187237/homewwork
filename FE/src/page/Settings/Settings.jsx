@@ -43,7 +43,6 @@ export default function Settings() {
       };
       fetchAccounts();
     }, [username]);
-
     console.log(accounts)
     const [account, setAccount]  = useState({  
         isLoggedIn: false,
