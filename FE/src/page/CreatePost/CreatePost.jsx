@@ -32,7 +32,7 @@ import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
-    const [access, setAccess] = useState("EAAFFBX64npsBAAaicyuFZCAHHZBnYmrtaLZCtrToVQfdweXqoPiMW15aUwNQZAMH5BYpgkDLgkElZBoYaPvp6ZAKGnbrQZBjeuuEkblJde3RAyO27T5TtQglIj6G4DsUbhodvpujVeemW3oop7CCqjmzN0zIZBcZAXGLcNNKxVPBnlavGKwtOQhy7v1GnFn0vxMROqKQpma3hoQZDZD")
+    const [access, setAccess] = useState("EAAFFBX64npsBAP7F747UTKM8wvANP4ORbPa8tHToY8fs5hOKhZCUeErnTQ3MC6UB7lPUZCdxe1ZAeAfL9lfXtKHn6h9XduIj4fqYswPu2WAML0K2TSyNiLriKUc114pvdAMnGZCyo0MDObXz03vi8VQcwu1896halUelfg8k5ucfyfLrtGscYVA08iNTkYn2Qc7N7vCZCTQwh3orZByQ9e")
     const [source, setSource]  = useState(null);
     const [desc, setDesc] = useState(null)
     // const [token, setToken]  = useState(null)
@@ -42,7 +42,7 @@ export default function CreatePost() {
     const [accounts, setAccounts] = useState([]);
     const [files, setFiles] = useState(null);
     const [mutiupload, setMutiupload] = useState(null);
-    const { user: currentUser, notifyFlag, dispatch } = useContext(Context);
+    const { user: currentUser } = useContext(Context);
     const content = useRef()
     const status = useRef()
     const account = useRef()
@@ -214,7 +214,6 @@ export default function CreatePost() {
         try {
           console.log(newPost)
           await axios.post("http://localhost:8800/api/post", newPost);
-        //   window.location.reload();
         } catch (err) {
           console.log(err)
         }

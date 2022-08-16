@@ -39,11 +39,11 @@ export default function AccountCard({account}) {
         <>
           <Flex display={'flex'} alignItems={'center'}>
               <Image
-                  height={50}
-                  width={50}
-                  borderRadius={100}
-                  marginRight={16}
-                  src={account.avatar}
+                height={50}
+                width={50}
+                borderRadius={100}
+                marginRight={16}
+                src={account.avatar}
               /> 
               <Text alignItems={'center'} fontSize={20} justifyContent='center' >{account.accountname}</Text>
 

@@ -72,12 +72,13 @@ class DateRangePicker extends React.Component {
             endDate={endDate}
             ranges={ranges}
             locale={this.locale}
-            onApply={this.handleApply}>
+            onApply={this.handleApply}
+          >
             <div className="input-group">
               <input type="text" className="form-control" value={label} readOnly />
               <span className="input-group-btn">
                 <Button className="default date-range-toggle">
-                  <i className="fa fa-calendar" />
+                  <i className="fa fa-calendar">Search</i>
                 </Button>
               </span>
             </div>

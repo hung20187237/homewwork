@@ -10,6 +10,11 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    accountname:{
+      type: String,
+      required: true,
+      default: "Hung Tran"
+    },
     desc: {
       type: String,
       max: 500,

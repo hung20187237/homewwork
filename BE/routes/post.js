@@ -49,9 +49,20 @@ router.get("/:postId", async (req, res) => {
 
 
 //get account's all posts
-router.get("/profile/:accountname", async (req, res) => {
+router.get("/profile/:accountId", async (req, res) => {
   try {
     const posts = await Post.find({ accountId: req.params.accountId });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get user's all posts
+router.get("/allposts/:username", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username })
+    const posts = await Post.find({ userId: user._id});
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
