@@ -32,7 +32,7 @@ import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
-    const [access, setAccess] = useState("EAAFFBX64npsBAP7F747UTKM8wvANP4ORbPa8tHToY8fs5hOKhZCUeErnTQ3MC6UB7lPUZCdxe1ZAeAfL9lfXtKHn6h9XduIj4fqYswPu2WAML0K2TSyNiLriKUc114pvdAMnGZCyo0MDObXz03vi8VQcwu1896halUelfg8k5ucfyfLrtGscYVA08iNTkYn2Qc7N7vCZCTQwh3orZByQ9e")
+    const [access, setAccess] = useState("EAAFFBX64npsBABa4kUVXxLyKQs82nhLtZBW2u6JXrTAIshpZCd3A3tOH9wxEIEiZCINSibU7kvrslR1SKZCo4wv1P80eDkkp6BsOOoBzguEHZCk1PVzZAdrpZA9elcB73dcmuoZADGI5w8ZCyfqvhqhKzI8ghzx43mRBDRSsCpYvemayUEIyDUar0")
     const [source, setSource]  = useState(null);
     const [desc, setDesc] = useState(null)
     // const [token, setToken]  = useState(null)
@@ -48,6 +48,10 @@ export default function CreatePost() {
     const account = useRef()
 
 
+    const onChange = () => {
+        const listref = account.current.values
+        console.log(listref)
+    }
 
     useEffect(() => {
       const fetchAccounts = async () => {
@@ -61,8 +65,6 @@ export default function CreatePost() {
       };
       fetchAccounts();
     }, [username]);
-
-
 
 
   
@@ -256,7 +258,7 @@ export default function CreatePost() {
                                     padding={'10px 28px'}
                                     borderRadius='10px'
                                     ref={account}
-                
+                                    onChange={onChange}
                                     
                                 >
                                         
@@ -264,7 +266,6 @@ export default function CreatePost() {
                                         
                                         return (
                                             <option value={a.accountId} 
-                                                onChange={(e)=>setAccess(a.accessToken)}
                                             >{a.accountname}</option>
                                             
                                         )
@@ -318,16 +319,6 @@ export default function CreatePost() {
                                 background={'rgb(200, 230, 255)'}
                                 onClick={someFunc}
                             >Share</Button>
-                            <Button marginTop={50} 
-                                height='40px'
-                                width={'70%'}
-                                border='1px solid'
-                                borderRadius={20}
-                                background={'rgb(200, 230, 255)'}
-                                onClick={(e) => {         
-                                    PostUrlvideo();                                
-                                }}
-                            >Share</Button>
 
                         </form>
                     </div>
@@ -344,7 +335,7 @@ export default function CreatePost() {
                                 borderRadius='10px'
                                 ref={status}
                             >
-                                <option value='Published1'>Published</option>
+                                <option value='Published'>Published</option>
                                 <option value='Scheduled'>Scheduled</option>
                                 <option value='Approcal'>Approcal</option>
                                 <option value='Failed'>Failed</option>

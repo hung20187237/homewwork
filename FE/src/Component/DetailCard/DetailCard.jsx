@@ -39,7 +39,6 @@ export default function DetailCard() {
         };
         fetchAccounts();
       }, [username]);
-    console.log(published)
 
     return (
         <div className='dashboardaccount'>

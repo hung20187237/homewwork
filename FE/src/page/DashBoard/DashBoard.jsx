@@ -16,8 +16,16 @@ export default function DashBoard() {
   const {user} = useContext(Context)
   const username = user.username;
   const [posts, setPosts] = useState([]);
-  const [dateRange, setDateRange] = useState()
+  const [data, setData] = useState([]);
+  // const [dateRange, setDateRange] = useState()
+  const monthFormat = 'YYYY/MM';
 
+
+
+  const disabledDate = (current) => {
+    return current && current > moment().endOf('day');
+  };
+  
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await axios.get("http://localhost:8800/api/post/allposts/" + username)
@@ -27,21 +35,25 @@ export default function DashBoard() {
           return new Date(p2.createdAt) - new Date(p1.createdAt);
         })
       );
+      setData(
+        res.data.sort((p1, p2) => {
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        })
+      );
     };
     fetchPosts();
   }, [username]);
 
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-    setDateRange(dateString)
-  }
-  console.log(dateRange)
-  const filterDateResult=()=>{
+
+  const filterDateResult=(x)=>{
+    const startdate = moment(x).startOf('month').format()
+    const enddate = moment(x).endOf('month').format()
+    console.log(startdate, enddate)
     const result = posts.filter((curDate)=>{
-      return (moment(curDate.createdAt).format('L')) == dateRange
+      return (curDate.createdAt) > startdate && (curDate.createdAt) < enddate
     });
     console.log(result)
-    setPosts(result)
+    setData(result)
   }
   return (
     <>
@@ -50,16 +62,23 @@ export default function DashBoard() {
           <Sidebar/>
           <div className='bodydashboard'>
             <div className='dashboardtime'>
-              <DatePicker onChange={onChange} picker="month" />
-              <button onClick={filterDateResult}>Clear</button>
+              <DatePicker onChange={x => {
+                filterDateResult(x);
+                }} 
+                picker="month" 
+                format={monthFormat} 
+                disabledDate={disabledDate}
+                
+              />
+              <button onClick={()=>setData(posts)}>Clear</button>
             </div>
             <DetailCard/>
             <div className='bodyactivity'>
               <span className='dashboardaccounttitle'> Activity</span>
               <div className='activitycontainer'>
-                {posts.map((post) =>(
+                {data.map((post) =>(
                   <div className='activitycontaineritem'>
-                    <span>{post.accountname} {post.status} the post.</span>
+                    <span>{post.accountname} {post.status} the post. {moment(post.createdAt).format('L')}</span>
                   </div>
                 ))} 
               </div>

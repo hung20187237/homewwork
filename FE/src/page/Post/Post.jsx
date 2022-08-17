@@ -36,7 +36,7 @@ export default function Post() {
     const account = useRef()
     const [dateRange, setDateRange] = useState([moment(), moment()]);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-    const [data, setData] = useState(posts);
+    const [data, setData] = useState([]);
 
 
     const filterResult=(catItem)=>{
@@ -68,6 +68,11 @@ export default function Post() {
                     console.log(result);
                     alert("upload Posts Success!");
                     setPosts(
+                        res.data.sort((p1, p2) => {
+                            return new Date(p2.createdAt) - new Date(p1.createdAt);
+                        })
+                    );
+                    setData(
                         res.data.sort((p1, p2) => {
                             return new Date(p2.createdAt) - new Date(p1.createdAt);
                         })

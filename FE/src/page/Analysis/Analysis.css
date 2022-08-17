@@ -9,10 +9,13 @@
     margin-top: 4vh;
     margin-bottom: 6vh;
 }
-.analysisacount{
-    padding: 4px 36px;
-    border: 1px solid;
-    border-radius: 5px;
+.ant-form-item{
+    margin-bottom: 0 !important;
+    justify-content: center;
+}
+
+.css-gwqjd7{
+    margin-top:0 !important;
 }
 .analysisdate{
     padding: 4px 36px;

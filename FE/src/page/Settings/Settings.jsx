@@ -20,7 +20,7 @@ import Topbar from '../../Component/Topbar/Topbar'
 import FacebookLogin from "react-facebook-login";
 import AccountCard from '../../Component/AccountCard/AccountCard';
 import { useContext,useRef,useState,useEffect } from "react";
-import { Context, ContextProvider } from '../../context/Context';
+import { Context} from '../../context/Context';
 import axios from "axios";
 
 
@@ -78,7 +78,6 @@ export default function Settings() {
 
     };
     
-
 
   return (
     <>

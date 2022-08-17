@@ -11,7 +11,7 @@ import {
   
 
 export default function AccountCard({account}) {
-  const { user: currentUser, notifyFlag, dispatch } = useContext(Context);
+  const { user: currentUser} = useContext(Context);
   const [currentaccount, setCurrentAccount] = useState(account);
 
   const handleAccountDelete = async () => {
@@ -22,14 +22,8 @@ export default function AccountCard({account}) {
       console.log(err)
     }
   }
-  const handleAccountUpdate = async () => {
-    try {
-      await axios.put("http://localhost:8800/api/account/" + account._id, { data: { userId: currentUser._id } });
-      setCurrentAccount()
-    } catch (err) {
-      console.log(err)
-    }
-  }
+
+
   return (
     <Flex display={'flex'} marginTop='6vh' border={'1px solid'}
         justifyContent='space-between'
