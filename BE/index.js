@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
-const jwt = require("jsonwebtoken");
-let Vimeo = require('vimeo').Vimeo;
-let client = new Vimeo("3aa5d5504bc93e11d9363ae7229d48e6b14465a0", "LU9vqPHaulHnCfVe0d8rZu+6SUvuwezvi3A7ivCNuILQEQi7V0o5ezEsirLAOlNZnbzkT/i3drIPZxMsR5/a25Nwfy2dQ6dMQTa6hlMyJQokrd8UbtddHcEToFSDEgy6", "037de32f62aac0c897e7d3958904f5f9");
+
 
 const cors = require('cors')
 const mongoose = require("mongoose");
@@ -14,6 +12,7 @@ const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const accountRoute = require('./routes/Accountfb');
 const postRoute = require('./routes/post')
+const followerRoute = require('./routes/Follower')
 const path = require("path");
 
 
@@ -27,6 +26,45 @@ mongoose.connect(
   }
 );
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+
+// const cron = require('cron');
+// // const todayReport = require('./excel_report_today');
+// var a =0
+// var newJob = () => {
+//     a += 1;
+// }
+// var followers_count
+
+// // const getFan = async (e) => {
+
+// //     try {
+// //         await axios.get("https://graph.facebook.com/100547109409842", {
+// //             params: {
+// //                 access_token: accessToken.current.value,
+// //                 fields: 'followers_count'
+// //             }
+// //         })
+// //         .then(
+// //             res => {
+// //                 const result = res.data;
+// //                 followers_count = (result.fan_count)
+// //             }
+// //         )
+// //     } catch (err) {}
+// // }
+
+// const job = new cron.CronJob({
+//   cronTime: '*/3 * * * * *', 
+//   onTick: function() {
+//     newJob();
+//     console.log('Cron jub runing...', a);
+//   },
+//   start: true, 
+//   timeZone: 'Asia/Ho_Chi_Minh' // Lưu ý set lại time zone cho đúng 
+// });
+
+// job.start();
+
 
 //middleware
 app.use(express.json());
@@ -43,17 +81,6 @@ const storage = multer.diskStorage({
   }
 });
 
-
-app.get("/get-token", (req, res) => {
-  const API_KEY = process.env.VIDEOSDK_API_KEY;
-  const SECRET_KEY = process.env.VIDEOSDK_SECRET_KEY;
-  const options = { expiresIn: "10m", algorithm: "HS256" };
-  const payload = {
-    apikey: API_KEY,
-  };
-  const token = jwt.sign(payload, SECRET_KEY, options);
-  res.json({ token });
-});
 
 
 const upload = multer({ storage: storage });
@@ -80,8 +107,9 @@ app.post("/api/mutiupload", mutiupload.array("images",12), async (req, res) => {
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
-app.use("/api/account", accountRoute)
-app.use("/api/post", postRoute)
+app.use("/api/account", accountRoute);
+app.use("/api/post", postRoute);
+app.use("/api/follow", followerRoute);
 
 
 app.listen(8800, () => {

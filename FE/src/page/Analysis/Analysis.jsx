@@ -34,10 +34,6 @@ export default function Analysis() {
     }, [username]); 
 
     const getFan = async (e) => {
-        const newData = {
-            access_token: accessToken.current.value
-        }
-        console.log(newData)
         try {
             await axios.get("https://graph.facebook.com/100547109409842", {
                 params: {
