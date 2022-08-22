@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const cron = require('cron');
+const axios = require('axios')
 
 
 const cors = require('cors')
@@ -27,50 +29,71 @@ mongoose.connect(
 );
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
-// const cron = require('cron');
-// // const todayReport = require('./excel_report_today');
-// var a =0
-// var newJob = () => {
-//     a += 1;
-// }
-// var followers_count
-
-// // const getFan = async (e) => {
-
-// //     try {
-// //         await axios.get("https://graph.facebook.com/100547109409842", {
-// //             params: {
-// //                 access_token: accessToken.current.value,
-// //                 fields: 'followers_count'
-// //             }
-// //         })
-// //         .then(
-// //             res => {
-// //                 const result = res.data;
-// //                 followers_count = (result.fan_count)
-// //             }
-// //         )
-// //     } catch (err) {}
-// // }
-
-// const job = new cron.CronJob({
-//   cronTime: '*/3 * * * * *', 
-//   onTick: function() {
-//     newJob();
-//     console.log('Cron jub runing...', a);
-//   },
-//   start: true, 
-//   timeZone: 'Asia/Ho_Chi_Minh' // Lưu ý set lại time zone cho đúng 
-// });
-
-// job.start();
-
 
 //middleware
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
 app.use(cors())
+
+
+
+var allaccount
+var followers_count
+
+
+const getFan = async () => {
+    const newFollow = {}
+
+    const res = await axios.get("http://localhost:8800/api/account/accountfb")
+    allaccount = (
+        res.data.sort((p1, p2) => {
+            return new Date(p2.createdAt) - new Date(p1.createdAt);
+        })
+    )
+    allaccount.map( async (acc) => {
+        newFollow.userId = acc.userId;
+        newFollow.accountId = acc.accountId;
+        const accessToken = acc.accessToken
+        try {    
+            await axios.get("https://graph.facebook.com/100547109409842", {
+                params: {
+                    access_token: accessToken,
+                    fields: 'followers_count'
+                }
+            })
+            .then(       
+                res => {
+                    const result = res.data;
+                    followers_count=result.followers_count
+                    newFollow.folowerCount = followers_count
+                }
+            )
+        }catch (err) {
+            console.log(err)
+        }
+        console.log(newFollow)
+        try{
+            await axios.post("http://localhost:8800/api/follow", newFollow);
+        } catch (err) {
+            console.log(err)
+        }
+    })
+
+}
+const job = new cron.CronJob({
+  cronTime: '0 14 * * *', 
+  onTick: function() {
+    getFan();
+    console.log('Cron jub runing...', a, followers_count, new Date);
+  },
+  start: true, 
+  timeZone: 'Asia/Ho_Chi_Minh' // Lưu ý set lại time zone cho đúng 
+});
+
+job.start();
+
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

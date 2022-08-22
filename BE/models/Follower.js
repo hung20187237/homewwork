@@ -11,8 +11,7 @@ const PostSchema = new mongoose.Schema(
       required: true,
     },
     folowerCount: {
-        type: Array,
-        default: []
+      type: Number,
     },
   },
   { timestamps: true }

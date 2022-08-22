@@ -13,12 +13,14 @@ export default function Analysis() {
     const {user} = useContext(Context)
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
+    const [accountFollow, setAccountFollow] = useState([]);
     const [fans, setFans] = useState();
     const [engagement, setEngagement] = useState();
     const [reaction, setReaction] = useState();
     const [impressionsUser, setImpressionsUser] = useState();
     const [impressions, setImpressions] = useState();
-    const accessToken = useRef('')
+    const account = useRef()
+    const refs = useRef()
 
 
     useEffect(() => {
@@ -33,11 +35,14 @@ export default function Analysis() {
         fetchAccounts();
     }, [username]); 
 
+    
     const getFan = async (e) => {
+        console.log(account.current)
+        console.log(refs.current)
         try {
             await axios.get("https://graph.facebook.com/100547109409842", {
                 params: {
-                    access_token: accessToken.current.value,
+                    access_token: account.current.value,
                     fields: 'fan_count, followers_count'
                 }
             })
@@ -50,7 +55,7 @@ export default function Analysis() {
             )
             await axios.get("https://graph.facebook.com/100547109409842/insights?", {
                 params: {
-                    access_token: accessToken.current.value,
+                    access_token: account.current.value,
                     metric: 'page_impressions_unique, page_post_engagements, page_impressions, page_engaged_users',
                     date_preset: 'last_90d',
                     period: 'day'
@@ -59,7 +64,6 @@ export default function Analysis() {
             .then(
                 res => {
                     const result = res.data;
-                    console.log(result);
                     const list1 = (result.data[1].values).map( item => item.value)
                     const list0 = (result.data[0].values).map( item => item.value)
                     const list2 = (result.data[2].values).map( item => item.value)
@@ -73,9 +77,17 @@ export default function Analysis() {
                     setImpressionsUser(list0.reduce(myFunc))
                 }
             )
+            const res = await axios.get("http://localhost:8800/api/follow/allfolow/" + refs.current.value)
+            setAccountFollow(
+                res.data.sort((p1, p2) => {
+                    return new Date(p1.createdAt) - new Date(p2.createdAt);
+                })
+            );
+            
         } catch (err) {}
     }
     console.log(reaction, impressions, impressionsUser, engagement)
+    console.log(accountFollow)
   return (
     <>
         <Topbar/>
@@ -91,12 +103,13 @@ export default function Analysis() {
                         height={'50px'}
                         padding={'10px 28px'}
                         borderRadius='10px'
-                        ref = {accessToken}
+                        ref = {account}
                         onChange={getFan}
                     >                        
                         {accounts.map((a) => {       
                             return (
-                                <option value={(a.accessToken)}
+                                <option value={a.accessToken} 
+                                ref={e => {refs.current = {value: a.accountId}}}
                                 >
                                 {a.accountname}</option>
                                                         
@@ -119,7 +132,7 @@ export default function Analysis() {
                     </div>
                     <div className='bodyanalysisbottom'>
                         <div className='followerchart'>
-                            <FollowChart/>
+                            <FollowChart accountFollow = {accountFollow}/>
                         </div>
                         <div className='postranking'>
                             <span>Post ranking</span>

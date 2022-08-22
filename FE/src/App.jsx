@@ -6,7 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import Login from './page/Login/Login';
-import Register from './page/register/Register';
+import Register from './page/Register/Register';
 import DashBoard from './page/DashBoard/DashBoard';
 import Post from './page/Post/Post';
 import CreatePost from './page/CreatePost/CreatePost';

@@ -1,45 +1,55 @@
 const cron = require('cron');
 const axios = require('axios')
-const Follower = require('./models/Follower')
-// const todayReport = require('./excel_report_today');
-var a =0
-var newJob = () => {
-    a += 1;
-}
 
-const accessToken ='EAAFFBX64npsBAMNUjyDVZC2ZAIm1AIju7HxtfUrSkLk6IDMWDB7lAMzXhsgUSB4EoaOgeRbKiZAto7hFeYZBbXXRPQIyWYqMN8F2xIzPrQEc2IkYZB68QkZAxZBpIIZB07lggNLnao6JrkpxJYc54YwHblXx5DZCzyH5XnnAKoR0TbZC8ZCqXHACg0BOIxU4W8ND2wYiXZCo8Mf1UbZASrvNOYKpd'
+
+var allaccount
 var followers_count
 
 
 const getFan = async () => {
-    const newFollow = {
-        a: '1'
-    }
-    try {
-        
-        return await axios.get("https://graph.facebook.com/100547109409842", {
-            params: {
-                access_token: accessToken,
-                fields: 'followers_count'
-            }
+    const newFollow = {}
+
+    const res = await axios.get("http://localhost:8800/api/account/accountfb")
+    allaccount = (
+        res.data.sort((p1, p2) => {
+            return new Date(p2.createdAt) - new Date(p1.createdAt);
         })
-        .then(
-            res => {
-                const result = res.data;
-                console.log(result);
-                followers_count=result.followers_count
-            }
-        )
-        return await axios.post("http://localhost:8800/api/post", newFollow);
-        
-    } catch (err) {}
+    )
+    allaccount.map( async (acc) => {
+        newFollow.userId = acc.userId;
+        newFollow.accountId = acc.accountId;
+        const accessToken = acc.accessToken
+        try {    
+            await axios.get("https://graph.facebook.com/100547109409842", {
+                params: {
+                    access_token: accessToken,
+                    fields: 'followers_count'
+                }
+            })
+            .then(       
+                res => {
+                    const result = res.data;
+                    followers_count=result.followers_count
+                    newFollow.folowerCount = followers_count
+                }
+            )
+        }catch (err) {
+            console.log(err)
+        }
+        console.log(newFollow)
+        try{
+            await axios.post("http://localhost:8800/api/follow", newFollow);
+        } catch (err) {
+            console.log(err)
+        }
+    })
+
 }
 
 
 const job = new cron.CronJob({
-  cronTime: '*/3 * * * * *', 
+  cronTime: '0 14 * * *', 
   onTick: function() {
-    newJob();
     getFan();
     console.log('Cron jub runing...', a, followers_count, new Date);
   },

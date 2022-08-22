@@ -55,6 +55,17 @@ router.get("/accountfb/:username", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//get all account
+router.get("/accountfb", async (req, res) => {
+  try {
+    const accounts = await Account.find();
+    res.status(200).json(accounts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //get a account
 router.get("/:id", async (req, res) => {
   try {
