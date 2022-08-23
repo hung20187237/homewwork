@@ -85,7 +85,7 @@ const job = new cron.CronJob({
   cronTime: '0 14 * * *', 
   onTick: function() {
     getFan();
-    console.log('Cron jub runing...', a, followers_count, new Date);
+    console.log('Cron jub runing...', followers_count, new Date);
   },
   start: true, 
   timeZone: 'Asia/Ho_Chi_Minh' // Lưu ý set lại time zone cho đúng 

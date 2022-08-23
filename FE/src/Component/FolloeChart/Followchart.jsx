@@ -1,14 +1,14 @@
 import React from 'react';
+import moment from "moment";
 import { Line, G2 } from '@ant-design/plots';
 import { each, findIndex } from '@antv/util';
 
 export default function FollowChart(accountFollow) {
-  console.log(accountFollow)
   const { InteractionAction, registerInteraction, registerAction } = G2;
   const data = accountFollow.accountFollow.map((a) => {
     return(
       {
-        year: a.createdAt, 
+        year: moment(a.createdAt).format('L'), 
         Follower_count: a.folowerCount,
       }
     )  

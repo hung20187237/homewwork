@@ -8,6 +8,7 @@ import { Context} from '../../context/Context';
 import axios from "axios";
 import {Select} from "@chakra-ui/react";
 import FollowChart from '../../Component/FolloeChart/Followchart';
+import Item from '../../Component/ItemCard/Item';
 
 export default function Analysis() {
     const {user} = useContext(Context)
@@ -15,13 +16,14 @@ export default function Analysis() {
     const [accounts, setAccounts] = useState([]);
     const [accountFollow, setAccountFollow] = useState([]);
     const [fans, setFans] = useState();
+    const [postsId, setPostsId] = useState([]);
     const [engagement, setEngagement] = useState();
     const [reaction, setReaction] = useState();
     const [impressionsUser, setImpressionsUser] = useState();
     const [impressions, setImpressions] = useState();
     const account = useRef()
     const refs = useRef()
-
+    
 
     useEffect(() => {
         const fetchAccounts = async () => {
@@ -34,11 +36,12 @@ export default function Analysis() {
         };
         fetchAccounts();
     }, [username]); 
-
     
     const getFan = async (e) => {
-        console.log(account.current)
-        console.log(refs.current)
+        
+        function myFunc(total, num) {
+            return total + num;
+        }
         try {
             await axios.get("https://graph.facebook.com/100547109409842", {
                 params: {
@@ -68,9 +71,6 @@ export default function Analysis() {
                     const list0 = (result.data[0].values).map( item => item.value)
                     const list2 = (result.data[2].values).map( item => item.value)
                     const list3 = (result.data[3].values).map( item => item.value)
-                    function myFunc(total, num) {
-                        return total + num;
-                    }
                     setReaction(list1.reduce(myFunc))
                     setImpressions(list2.reduce(myFunc))
                     setEngagement(list3.reduce(myFunc))
@@ -83,11 +83,46 @@ export default function Analysis() {
                     return new Date(p1.createdAt) - new Date(p2.createdAt);
                 })
             );
-            
+            const listrank = [];
+
+            const respos = await axios.get("https://graph.facebook.com/100547109409842/posts?", {
+                params: {
+                    access_token: account.current.value,
+                    fields: 'id, message, full_picture',
+                }
+            })
+            respos.data.data.map(file =>
+                listrank.push(file)
+            )
+
+            const result = await Promise.all(listrank.map( async(id) => {
+                const res1 = await axios.get(`https://graph.facebook.com/${id.id}/insights?`, {
+                    params: {
+                        access_token: account.current.value,
+                        metric: 'post_engaged_users',
+                    }
+                })
+                id.rank = (res1.data.data[0].values[0].value)
+
+                return id
+            }))
+
+            setPostsId(
+                result.sort((p1, p2) => {
+                    return p2.rank - p1.rank
+                })
+            );
+
         } catch (err) {}
+
+
     }
     console.log(reaction, impressions, impressionsUser, engagement)
     console.log(accountFollow)
+    console.log(postsId)
+
+
+
   return (
     <>
         <Topbar/>
@@ -136,6 +171,8 @@ export default function Analysis() {
                         </div>
                         <div className='postranking'>
                             <span>Post ranking</span>
+                            <Item posts = {postsId}/>
+
                         </div>
                     </div>
                 </div>
