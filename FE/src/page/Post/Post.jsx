@@ -91,7 +91,7 @@ export default function Post() {
         const listdate = dateRange.map( date => moment(date._d).format())
         console.log(listdate)
         const result = posts.filter((curDate)=>{
-            return (curDate.createdAt) > listdate[0] && (curDate.createdAt) < listdate[1]
+            return (curDate.createdAt) >= listdate[0] && (curDate.createdAt) <= listdate[1]
         });
         console.log(result)
         setData(result)

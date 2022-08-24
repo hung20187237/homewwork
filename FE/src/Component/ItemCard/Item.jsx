@@ -4,9 +4,9 @@ import "./Item.css"
 export default function Item(posts) {
   return (
     <>
-    {posts.posts.map((post, index=5) => {
+    {posts.posts.map((post, index) => {
         return(
-            <div className='postlistitem1' key={index<=5} >
+            <div className='postlistitem1' key={index} >
                 <div className='postitemleft1'>
                     <div>
                         {post.full_picture ? <img src={post.full_picture} alt="" className='imgpostitem'/>: null}

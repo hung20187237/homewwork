@@ -9,17 +9,21 @@ import axios from "axios";
 import {Select} from "@chakra-ui/react";
 import FollowChart from '../../Component/FolloeChart/Followchart';
 import Item from '../../Component/ItemCard/Item';
+import moment from "moment";
 
 export default function Analysis() {
     const {user} = useContext(Context)
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
     const [accountFollow, setAccountFollow] = useState([]);
+    const [datafollow, setDataFollow] = useState([]);
     const [fans, setFans] = useState();
     const [postsId, setPostsId] = useState([]);
+    const [data, setData] = useState([]);
     const [engagement, setEngagement] = useState();
     const [reaction, setReaction] = useState();
     const [impressionsUser, setImpressionsUser] = useState();
+    const [dateRange, setDateRange] = useState([moment(), moment()]);
     const [impressions, setImpressions] = useState();
     const account = useRef()
     const refs = useRef()
@@ -83,12 +87,17 @@ export default function Analysis() {
                     return new Date(p1.createdAt) - new Date(p2.createdAt);
                 })
             );
+            setDataFollow(
+                res.data.sort((p1, p2) => {
+                    return new Date(p1.createdAt) - new Date(p2.createdAt);
+                })
+            )
             const listrank = [];
 
             const respos = await axios.get("https://graph.facebook.com/100547109409842/posts?", {
                 params: {
                     access_token: account.current.value,
-                    fields: 'id, message, full_picture',
+                    fields: 'id, message, full_picture, created_time',
                 }
             })
             respos.data.data.map(file =>
@@ -112,6 +121,9 @@ export default function Analysis() {
                     return p2.rank - p1.rank
                 })
             );
+            setData(result.sort((p1, p2) => {
+                return p2.rank - p1.rank
+            }))
 
         } catch (err) {}
 
@@ -120,8 +132,20 @@ export default function Analysis() {
     console.log(reaction, impressions, impressionsUser, engagement)
     console.log(accountFollow)
     console.log(postsId)
-
-
+    const filterDateResult=()=>{
+        const listdate = dateRange.map( date => moment(date._d).format())
+        console.log(listdate)
+        const result = postsId.filter((curDate)=>{
+            return (curDate.created_time) >= listdate[0] && (curDate.created_time) <= listdate[1]
+        });
+        console.log(result)
+        setData(result)
+        const resultfollow = accountFollow.filter((curDate)=>{
+            return  listdate[0] <= (curDate.createdAt) && (curDate.createdAt) <= listdate[1]
+        });
+        setDataFollow(resultfollow)
+    }
+    console.log(data)
 
   return (
     <>
@@ -154,9 +178,15 @@ export default function Analysis() {
                     <Form.Item colon={false}>
                         <DatePicker.RangePicker
                             format="MMM Do, YY"
+                            value={dateRange}
                             separator={"-"}
                             allowClear={false}
+                            onChange={x => {
+                                console.log(x);
+                                setDateRange(x);
+                            }}
                         />
+                        <button onClick={filterDateResult}>filter</button>
                     </Form.Item>
                 </div>
                 <div className='bodyanalysis'>
@@ -167,11 +197,11 @@ export default function Analysis() {
                     </div>
                     <div className='bodyanalysisbottom'>
                         <div className='followerchart'>
-                            <FollowChart accountFollow = {accountFollow}/>
+                            <FollowChart accountFollow = {datafollow}/>
                         </div>
                         <div className='postranking'>
                             <span>Post ranking</span>
-                            <Item posts = {postsId}/>
+                            <Item posts = {data}/>
 
                         </div>
                     </div>

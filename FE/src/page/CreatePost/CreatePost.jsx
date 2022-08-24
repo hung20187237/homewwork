@@ -32,7 +32,7 @@ import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
-    const [access, setAccess] = useState("EAAFFBX64npsBALf8oxHZCrFjsojlXD6oLVZB3vMBFwZCvZAfUY8EIOz7FHsyXgviUVKOVZBUKRcBnt3FkrZBXbpSZAoPPnVPZAZCvF9VrU9gzM8HUGHvTZCmDia0ZB5LpM3lb7NGb0pBhZAjYZC0SsjF0S4l0P11AWubBoQZA0mtJ6lqi5iTgOolXZBkqauRj6ZAhW96NQbVk0rfjnf1fCChmhnZAUJeS")
+    // const [access, setAccess] = useState("EAAFFBX64npsBAFtlBEbPi9uUVVuF7HMGJWstzh3PiGw11dwWcyhBfg208SGvUMRCdimScZCzwsY1RT5Vr0eUYESLaqzIOpW8AN2YkSW67ZBeZCEjDkZC1odaw54KZBXWgNKi0E13EV6dDpLyBr7fVkOcphCZC8bMS0yURijCZBB5IJJzG5iAPBw")
     const [source, setSource]  = useState(null);
     const [desc, setDesc] = useState(null)
     // const [token, setToken]  = useState(null)
@@ -46,7 +46,8 @@ export default function CreatePost() {
     const content = useRef()
     const status = useRef()
     const account = useRef()
-
+    const refs = useRef()
+    var currentTimeInSeconds=Math.floor(Date.now()/1000)
 
     const onChange = () => {
         const listref = account.current.values
@@ -74,8 +75,16 @@ export default function CreatePost() {
         const fileName = source.name;
         src.append("name", fileName);
         src.append("file", source);
-        src.append("access_token", access)
+        src.append("access_token", refs.current.value)
         src.append("description", content.current.value)
+        if(status.current.value === 'Scheduled'){
+            src.published = 'false'
+            src.scheduled_publish_time = currentTimeInSeconds + 600
+        }
+
+        if(status.current.value === 'Approcal' || status.current.value === 'Failed' || status.current.value === 'Draft'){
+            src.published = 'false'
+        }
         console.log(src)
         try {
             await axios.post("https://graph.facebook.com/100547109409842/videos?", src)
@@ -92,41 +101,44 @@ export default function CreatePost() {
 
     const ShowUrlImage = async(e) => {
         let choseImage = [];
-        try {
-            if (Array.isArray(mutiupload)) {
-              const uploadArray = mutiupload.map(async item => {
+        if (Array.isArray(mutiupload)) {
+            const uploadArray = mutiupload.map(async item => {
+                console.log(item)
                 const resultUpload = await axios({
-                  method: "post",
-                  url: "https://api.imgur.com/3/image",
-                  headers: {
-                    Authorization: `Client-ID 225600e2fe06d7b`
-                  },
-                  data :item
+                    method: "post",
+                    url: "https://api.imgur.com/3/image",
+                    headers: {
+                        Authorization: `Client-ID 225600e2fe06d7b`
+                    },
+                    data :item
                 }) 
                 console.log(resultUpload)// bỏ hết then đi
                 if (resultUpload.status === 200) {
-                  return resultUpload.data.data.link;
+                    return resultUpload.data.data.link;
                 }
-              });
-              choseImage = await Promise.all(uploadArray);
-    
-            }
-        } catch (error) {
-            alert("image not uploaded");
-            window.location.reload();
+            });
+            choseImage = await Promise.all(uploadArray);
         }
 
         const postRandomQuote = async (e) => {
+            
             const newData1 = {
-                access_token: access,
+                access_token: refs.current.value,
                 message: content.current.value,
-                link: "https://www.facebook.com/Test-1-100547109409842",
             }
             if(files.length === 1){
                 const newData = {
-                    access_token: access,
+                    access_token: refs.current.value,
                     message: content.current.value,
                     url: choseImage[0]
+                }
+                if(status.current.value === 'Scheduled'){
+                    newData.published = 'false'
+                    newData.scheduled_publish_time = currentTimeInSeconds + 600
+                }
+
+                if(status.current.value === 'Approcal' || status.current.value === 'Failed' || status.current.value === 'Draft'){
+                    newData.published = 'false'
                 }
                 
                 console.log(newData)
@@ -148,6 +160,7 @@ export default function CreatePost() {
                 const child_attachments =  choseImage.map(v => ({ link: v, picture: v  }))
                 console.log(child_attachments)
                 newData1.child_attachments = child_attachments
+                newData1.link = "https://www.facebook.com/Test-1-100547109409842"
                 try {
                     await axios.post("https://graph.facebook.com/100547109409842/feed?", newData1)
                     .then(
@@ -163,7 +176,19 @@ export default function CreatePost() {
                 }catch (err) { }
             }
             if(files.length === 0){
-                
+                try {
+                    await axios.post("https://graph.facebook.com/100547109409842/feed?", newData1)
+                    .then(
+                    res => {
+                        const result = res.data;
+                        console.log(result);
+                        alert("upload post Success!");
+                    },
+                        error => {
+                        console.log(error);
+                    })
+                    window.location.reload();
+                }catch (err) { }
             }
         };
         postRandomQuote.call()
@@ -223,7 +248,7 @@ export default function CreatePost() {
     
     const MutipleFileChange = (files) => {
         console.log(files)
-        const listImg =Object.values(files)
+        const listImg = Object.values(files)
         const listUrl = listImg.map( img => URL.createObjectURL(img))
         setFiles(files)
         setMutifile(listUrl)
@@ -266,6 +291,7 @@ export default function CreatePost() {
                                         
                                         return (
                                             <option value={a.accountId} 
+                                            ref={e => {refs.current = {value: a.accessToken}}}
                                             >{a.accountname}</option>
                                             
                                         )
