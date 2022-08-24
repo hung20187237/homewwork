@@ -31,6 +31,7 @@ export default function CreatePost() {
     const [files, setFiles] = useState(null);
     const [mutiupload, setMutiupload] = useState(null);
     const { user: currentUser } = useContext(Context);
+    const GRAPH_API = process.env.GRAPH_API
     const content = useRef()
     const status = useRef()
     const account = useRef()
@@ -75,7 +76,7 @@ export default function CreatePost() {
         }
         console.log(src)
         try {
-            await axios.post("https://graph.facebook.com/100547109409842/videos?", src)
+            await axios.post(`${GRAPH_API}/100547109409842/videos?`, src)
             .then(
                 res => {
                     const result = res.data;
@@ -131,7 +132,7 @@ export default function CreatePost() {
                 
                 console.log(newData)
                 try {
-                    await axios.post("https://graph.facebook.com/100547109409842/photos?", newData)
+                    await axios.post(`${GRAPH_API}/100547109409842/photos?`, newData)
                     .then(
                     res => {
                         const result = res.data;
@@ -148,9 +149,9 @@ export default function CreatePost() {
                 const child_attachments =  choseImage.map(v => ({ link: v, picture: v  }))
                 console.log(child_attachments)
                 newData1.child_attachments = child_attachments
-                newData1.link = "https://www.facebook.com/Test-1-100547109409842"
+                newData1.link = `${GRAPH_API}/Test-1-100547109409842`
                 try {
-                    await axios.post("https://graph.facebook.com/100547109409842/feed?", newData1)
+                    await axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
                     .then(
                     res => {
                         const result = res.data;
@@ -165,7 +166,7 @@ export default function CreatePost() {
             }
             if(files.length === 0){
                 try {
-                    await axios.post("https://graph.facebook.com/100547109409842/feed?", newData1)
+                    await axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
                     .then(
                     res => {
                         const result = res.data;
