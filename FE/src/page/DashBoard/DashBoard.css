@@ -1,25 +1,25 @@
-.homecontainer{
+.home-container {
     display: flex;
     background-color: rgb(245, 249, 255);
 }
-.bodydashboard{
+.body-dashboard {
     flex: 8;
 }
-.dashboardtime{
+.dashboard-time {
     float: right;
     margin-right: 4vh;
     margin-top: 4vh;
 }
-.activitycontainer{
+.activity-container {
     border: 1px solid;
     overflow-y: scroll;
     height: 36vh;
     margin: 0 20px;
 }
-.activitycontaineritem{  
+.activity-container-item {  
     margin-left: 8px;
     margin-top: 10px;
 }
-.activitycontaineritem > span{
+.activitycontaineritem > span {
     font-size: 20px;
 }

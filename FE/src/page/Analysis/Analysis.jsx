@@ -1,15 +1,16 @@
 import React from 'react'
-import Sidebar from '../../Component/Sidebar/Sidebar'
-import Topbar from '../../Component/Topbar/Topbar'
-import "./Analysis.css"
+import moment from "moment";
 import { DatePicker, Form } from "antd";
 import { useState, useRef, useContext, useEffect } from "react";
-import { Context} from '../../context/Context';
 import axios from "axios";
 import {Select} from "@chakra-ui/react";
+
+import Sidebar from '../../Component/Sidebar/Sidebar'
+import Topbar from '../../Component/Topbar/Topbar'
+import { Context} from '../../context/Context';
 import FollowChart from '../../Component/FolloeChart/Followchart';
 import Item from '../../Component/ItemCard/Item';
-import moment from "moment";
+import "./Analysis.css"
 
 export default function Analysis() {
     const {user} = useContext(Context)
@@ -40,27 +41,23 @@ export default function Analysis() {
         };
         fetchAccounts();
     }, [username]); 
-    
+
     const getFan = async (e) => {
         
         function myFunc(total, num) {
             return total + num;
         }
+        console.log(account.current.value)
         try {
-            await axios.get("https://graph.facebook.com/100547109409842", {
+            const getidIn = await axios.get("https://graph.facebook.com/100547109409842", {
                 params: {
                     access_token: account.current.value,
                     fields: 'fan_count, followers_count'
                 }
             })
-            .then(
-                res => {
-                    const result = res.data;
-                    console.log(result);
-                    setFans(result.fan_count)
-                }
-            )
-            await axios.get("https://graph.facebook.com/100547109409842/insights?", {
+            setFans(getidIn.data.fan_count)
+
+            const resultInsight = await axios.get("https://graph.facebook.com/100547109409842/insights?", {
                 params: {
                     access_token: account.current.value,
                     metric: 'page_impressions_unique, page_post_engagements, page_impressions, page_engaged_users',
@@ -68,19 +65,16 @@ export default function Analysis() {
                     period: 'day'
                 }
             })
-            .then(
-                res => {
-                    const result = res.data;
-                    const list1 = (result.data[1].values).map( item => item.value)
-                    const list0 = (result.data[0].values).map( item => item.value)
-                    const list2 = (result.data[2].values).map( item => item.value)
-                    const list3 = (result.data[3].values).map( item => item.value)
-                    setReaction(list1.reduce(myFunc))
-                    setImpressions(list2.reduce(myFunc))
-                    setEngagement(list3.reduce(myFunc))
-                    setImpressionsUser(list0.reduce(myFunc))
-                }
-            )
+            const reslist = resultInsight.data
+            const listreaction = (reslist.data[1].values).map( item => item.value)
+            const listimpressionsUser = (reslist.data[0].values).map( item => item.value)
+            const listimpressions = (reslist.data[2].values).map( item => item.value)
+            const listengagement = (reslist.data[3].values).map( item => item.value)
+            setReaction(listreaction.reduce(myFunc))
+            setImpressions(listimpressions.reduce(myFunc))
+            setEngagement(listengagement.reduce(myFunc))
+            setImpressionsUser(listimpressionsUser.reduce(myFunc))
+
             const res = await axios.get("http://localhost:8800/api/follow/allfolow/" + refs.current.value)
             setAccountFollow(
                 res.data.sort((p1, p2) => {
@@ -150,18 +144,12 @@ export default function Analysis() {
   return (
     <>
         <Topbar/>
-        <div className='homecontainer'>
+        <div className='home-container'>
             <Sidebar/>
-            <div className='mainanalysis'>
-                <div className='analysistop'>
+            <div className='main-analysis'>
+                <div className='analysis-top'>
                     <Select placeholder= 'UserAccount'
-                        size={'lg'} 
-                        variant='filled'
-                        marginTop={'4vh'}
-                        width='300px'
-                        height={'50px'}
-                        padding={'10px 28px'}
-                        borderRadius='10px'
+                        className='list-account-Analysis'
                         ref = {account}
                         onChange={getFan}
                     >                        
@@ -189,17 +177,17 @@ export default function Analysis() {
                         <button onClick={filterDateResult}>filter</button>
                     </Form.Item>
                 </div>
-                <div className='bodyanalysis'>
-                    <div className='bodyanalysistop'>
-                        <span className='bodyanalysistopcat'>Fans: {fans}</span>
-                        <span className='bodyanalysistopcat'>Reacttion rate: {reaction ? (reaction/impressions).toFixed(2)*100:null}%</span>
-                        <span className='bodyanalysistopcat'>Engegament rate: {engagement ? (engagement/impressionsUser).toFixed(2)*100:null}%</span>
+                <div className='body-analysis'>
+                    <div className='body-analysis-top'>
+                        <span className='body-analysis-topcat'>Fans: {fans}</span>
+                        <span className='body-analysis-topcat'>Reacttion rate: {reaction ? (reaction/impressions).toFixed(2)*100:null}%</span>
+                        <span className='body-analysis-topcat'>Engegament rate: {engagement ? (engagement/impressionsUser).toFixed(2)*100:null}%</span>
                     </div>
                     <div className='bodyanalysisbottom'>
-                        <div className='followerchart'>
+                        <div className='follower-chart'>
                             <FollowChart accountFollow = {datafollow}/>
                         </div>
-                        <div className='postranking'>
+                        <div className='post-ranking'>
                             <span>Post ranking</span>
                             <Item posts = {data}/>
 

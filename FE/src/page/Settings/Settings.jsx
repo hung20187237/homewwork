@@ -1,12 +1,8 @@
 import React from 'react'
-import "./Settings.css"
+import axios from "axios";
+import { useContext,useState,useEffect } from "react";
 import {
     Box,
-    Flex,
-    Image,
-    SimpleGrid,
-    Spacer,
-    Button,
     Input,
     Tab,
     TabList,
@@ -15,13 +11,14 @@ import {
     Tabs,
     Text,
   } from "@chakra-ui/react";
+
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
 import FacebookLogin from "react-facebook-login";
 import AccountCard from '../../Component/AccountCard/AccountCard';
-import { useContext,useRef,useState,useEffect } from "react";
 import { Context} from '../../context/Context';
-import axios from "axios";
+import "./Settings.css"
+
 
 
 
@@ -82,9 +79,9 @@ export default function Settings() {
   return (
     <>
         <Topbar/>
-        <div className='homecontainer'>
+        <div className='home-container'>
             <Sidebar/>
-            <div className='mainsettings'>
+            <div className='main-settings'>
                 <Tabs isFitted colorScheme="red">
                     <TabList style={{ borderBottom: "1px solid #E0DCDC", height: "6vh", justifyContent:"center"}}>
                         <Tab width={'30%'} border='1px solid' borderRadius={10}>SNS</Tab>

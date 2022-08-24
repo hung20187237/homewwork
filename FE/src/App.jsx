@@ -1,10 +1,10 @@
-
-import './App.css';
+import { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
+
 import Login from './page/Login/Login';
 import Register from './page/Register/Register';
 import DashBoard from './page/DashBoard/DashBoard';
@@ -13,7 +13,7 @@ import CreatePost from './page/CreatePost/CreatePost';
 import Analysis from './page/Analysis/Analysis';
 import Settings from './page/Settings/Settings';
 import { Context } from "./context/Context";
-import { useRef, useContext } from "react";
+import './App.css';
 
 
 function App() {

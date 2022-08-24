@@ -1,31 +1,19 @@
 import React from 'react'
 import {
-    Box,
-    Flex,
-    Image,
-    SimpleGrid,
-    Spacer,
-    Button,
-    Input,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    Text,
     Select,
-    Img
 } from "@chakra-ui/react";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "./Post.css"
 import "antd/dist/antd.css"
 import { DatePicker, Form } from "antd";
 import moment from "moment";
+import { useState, useRef, useContext, useEffect } from "react";
+import axios from "axios";
+
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
 import { Context} from '../../context/Context';
-import { useState, useRef, useContext, useEffect } from "react";
-import axios from "axios";
+
 
 
 export default function Post() {
@@ -123,18 +111,12 @@ export default function Post() {
   return (
     <>
         <Topbar/>
-        <div className='homecontainer'>
+        <div className='home-container'>
           <Sidebar/>
-          <div className='bodydashboard'>
-            <div className='listposttop'>
+          <div className='body-dashboard'>
+            <div className='list-post-top'>
                 <Select placeholder= 'UserAccount'
-                    size={'lg'} 
-                    variant='filled'
-                    marginTop={'4vh'}
-                    width='300px'
-                    height={'50px'}
-                    padding={'10px 28px'}
-                    borderRadius='10px'
+                    className='selectaccount'
                     ref={account}
                     onChange={getPostAccount}
                 
@@ -150,7 +132,7 @@ export default function Post() {
                         )
                     })} 
                 </Select>
-                <div className='posttime'> 
+                <div className='post-time'> 
                     <Form.Item colon={false}>
                         <DatePicker.RangePicker
                             format="MMM Do, YY"
@@ -167,28 +149,28 @@ export default function Post() {
                 </div>
             </div>
             <div className='buttonlist'>
-                <button className='postlistbutton' onClick={()=>setData(posts)}>
+                <button className='post-list-button' onClick={()=>setData(posts)}>
                     <span>All</span>
                 </button>
-                <button className='postlistbutton' onClick={()=>filterResult('Published')}>
+                <button className='post-list-button' onClick={()=>filterResult('Published')}>
                     <span>Published</span>
                 </button>
-                <button className='postlistbutton' onClick={()=>filterResult('Scheduled')}>
+                <button className='post-list-button' onClick={()=>filterResult('Scheduled')}>
                     <span>Scheduled</span>
                 </button>
-                <button className='postlistbutton' onClick={()=>filterResult('Approcal')}>
+                <button className='post-list-button' onClick={()=>filterResult('Approcal')}>
                     <span>Approcal</span>
                 </button> 
-                <button className='postlistbutton' onClick={()=>filterResult('Failed')}>
+                <button className='post-list-button' onClick={()=>filterResult('Failed')}>
                     <span>Failed</span>
                 </button> 
-                <button className='postlistbutton' onClick={()=>filterResult('Draft')}>
+                <button className='post-list-button' onClick={()=>filterResult('Draft')}>
                     <span>Draft</span>
                 </button>    
                 
             </div>
             
-            <div className='postlistbody'>
+            <div className='post-list-body'>
                 {data.map((post, index)=> (
                     <Item {...post} key={index}/>
                 ))}

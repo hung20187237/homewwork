@@ -1,38 +1,33 @@
-.mainanalysis{
+.main-analysis {
     flex: 8;
     margin-left: 4vh;
     margin-right: 4vh;
 }
-.analysistop{
+.analysis-top {
     display: flex;
     justify-content: space-between;
     margin-top: 4vh;
     margin-bottom: 6vh;
 }
-.ant-form-item{
+.ant-form-item {
     margin-bottom: 0 !important;
     justify-content: center;
 }
 
-.css-gwqjd7{
+.css-gwqjd7 {
     margin-top:0 !important;
 }
-.analysisdate{
-    padding: 4px 36px;
-    border: 1px solid;
-    border-radius: 5px;
-}
-.bodyanalysistop{
+.body-analysis-top {
     display: flex;
     justify-content: space-between;
     margin-bottom: 4vh;
 }
-.bodyanalysistopcat{
+.body-analysis-topcat {
     padding: 12px 28px;
     border: 1px solid;
     border-radius: 5px;
 }
-.followerchart{
+.follower-chart{
     width: 100%;
     height: 24vh;
     border: 1px solid;
@@ -41,7 +36,7 @@
     justify-content: center;
     margin-bottom: 4vh;
 }
-.postranking{
+.post-ranking{
     width: 100%;
     height: 28vh;
     border: 1px solid;
@@ -52,6 +47,12 @@
     position: sticky;
     
 }
-.postranking > span {
+.post-ranking > span {
     font-size: 20px;
+}
+.list-account-Analysis{
+    width: 200px;
+    height: 50px;
+    padding: 10px 28px;
+    border-radius: 10px;
 }

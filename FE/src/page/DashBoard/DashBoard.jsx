@@ -1,14 +1,16 @@
 import { DatePicker} from 'antd';
 import 'antd/dist/antd.css';
 import React from 'react'
+import { useContext,useState,useEffect } from "react";
+import axios from "axios";
+import moment from "moment";
+
 import DetailCard from '../../Component/DetailCard/DetailCard'
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
-import { useContext,useRef,useState,useEffect } from "react";
 import { Context} from '../../context/Context';
 import "./DashBoard.css"
-import axios from "axios";
-import moment from "moment";
+
 
 
 
@@ -17,7 +19,6 @@ export default function DashBoard() {
   const username = user.username;
   const [posts, setPosts] = useState([]);
   const [data, setData] = useState([]);
-  // const [dateRange, setDateRange] = useState()
   const monthFormat = 'YYYY/MM';
 
 
@@ -58,10 +59,10 @@ export default function DashBoard() {
   return (
     <>
         <Topbar/>
-        <div className='homecontainer'>
+        <div className='home-container'>
           <Sidebar/>
-          <div className='bodydashboard'>
-            <div className='dashboardtime'>
+          <div className='body-dashboard'>
+            <div className='dashboard-time'>
               <DatePicker onChange={x => {
                 filterDateResult(x);
                 }} 
@@ -73,11 +74,11 @@ export default function DashBoard() {
               <button onClick={()=>setData(posts)}>Clear</button>
             </div>
             <DetailCard/>
-            <div className='bodyactivity'>
-              <span className='dashboardaccounttitle'> Activity</span>
-              <div className='activitycontainer'>
+            <div className='body-activity'>
+              <span className='dashboard-account-title'> Activity</span>
+              <div className='activity-container'>
                 {data.map((post) =>(
-                  <div className='activitycontaineritem'>
+                  <div className='activity-container-item'>
                     <span>{post.accountname} {post.status} the post. {moment(post.createdAt).format('L')}</span>
                   </div>
                 ))} 

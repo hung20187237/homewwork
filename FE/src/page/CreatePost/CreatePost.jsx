@@ -1,29 +1,20 @@
+
+import React from 'react'
+import { useState, useRef, useContext, useEffect } from "react";
 import {
     Box,
     Flex,
-    Image,
-    SimpleGrid,
-    Spacer,
     Button,
-    Input,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
     Text,
     Select,
-    Img
   } from "@chakra-ui/react";
-import React from 'react'
 import FbImageLibrary from 'react-fb-image-grid'
+import axios from "axios";
+
 import Sidebar from '../../Component/Sidebar/Sidebar'
 import Topbar from '../../Component/Topbar/Topbar'
-import { useState, useRef, useContext, useEffect } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Context} from '../../context/Context';
-import * as tus from 'tus-js-client'
-import axios from "axios";
 import "./CreatePost.css"
 
 
@@ -32,11 +23,8 @@ import "./CreatePost.css"
 
 export default function CreatePost() {
     const [mutifile, setMutifile] = useState(null);
-    // const [access, setAccess] = useState("EAAFFBX64npsBAFtlBEbPi9uUVVuF7HMGJWstzh3PiGw11dwWcyhBfg208SGvUMRCdimScZCzwsY1RT5Vr0eUYESLaqzIOpW8AN2YkSW67ZBeZCEjDkZC1odaw54KZBXWgNKi0E13EV6dDpLyBr7fVkOcphCZC8bMS0yURijCZBB5IJJzG5iAPBw")
     const [source, setSource]  = useState(null);
     const [desc, setDesc] = useState(null)
-    // const [token, setToken]  = useState(null)
-    // const [url, setlistUrl] = useState([null])
     const {user} = useContext(Context)
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
@@ -69,7 +57,7 @@ export default function CreatePost() {
 
 
   
-    const PostUrlvideo = async(e) => {
+    const postUrlvideo = async(e) => {
         const src = new FormData()
         console.log(source)
         const fileName = source.name;
@@ -99,7 +87,7 @@ export default function CreatePost() {
         }
     }   
 
-    const ShowUrlImage = async(e) => {
+    const showUrlImage = async(e) => {
         let choseImage = [];
         if (Array.isArray(mutiupload)) {
             const uploadArray = mutiupload.map(async item => {
@@ -246,7 +234,7 @@ export default function CreatePost() {
         }
     }
     
-    const MutipleFileChange = (files) => {
+    const mutipleFileChange = (files) => {
         console.log(files)
         const listImg = Object.values(files)
         const listUrl = listImg.map( img => URL.createObjectURL(img))
@@ -256,8 +244,8 @@ export default function CreatePost() {
     }
     const someFunc = (e) => {
         handlePostSubmit();
-        ShowUrlImage();
-        PostUrlvideo();
+        showUrlImage();
+        postUrlvideo();
         
     }
 
@@ -267,21 +255,15 @@ export default function CreatePost() {
     return (
         <>
             <Topbar/>
-            <div className='homecontainer'>
+            <div className='home-container'>
                 <Sidebar/>
-                <div className='bodycreatepost'>
-                    <div className='createpostleft'>
-                        <form className="reviewBottom" encType="multipart/form-data">
-                            <div className='createpostTop'>
+                <div className='body-create-post'>
+                    <div className='create-post-left'>
+                        <form className="review-Bottom" encType="multipart/form-data">
+                            <div className='create-post-Top'>
 
                                 <Select placeholder= 'UserAccount'
-                                    size={'lg'} 
-                                    variant='filled'
-                                    marginTop={'4vh'}
-                                    width='300px'
-                                    height={'50px'}
-                                    padding={'10px 28px'}
-                                    borderRadius='10px'
+                                    className='select-account-create'
                                     ref={account}
                                     onChange={onChange}
                                     
@@ -299,19 +281,19 @@ export default function CreatePost() {
                                     
                                 </Select>
                                 
-                                <button className='buttonselect'>Select teamviewer</button>
+                                <button className='button-select'>Select teamviewer</button>
                             </div>
                             <div>
                                 <textarea
-                                    className="createpostInput"
+                                    className="create-post-Input"
                                     placeholder="Post content..."
                                     onChange={(e) => setDesc(e.target.value)}
                                     ref={content}
                                 ></textarea>
                             </div>
 
-                            <label htmlFor="file" className="addimagepost">
-                                <span className="addimageText">Add image</span>
+                            <label htmlFor="file" className="add-image-post">
+                                <span className="add-image-Text">Add image</span>
                                 <input
                                     style={{ display: "none" }}
                                     type="file"
@@ -319,14 +301,14 @@ export default function CreatePost() {
                                     multiple
                                     accept=".png,.jpeg,.jpg"
                                     onChange={(e) => {           
-                                        MutipleFileChange(e.target.files);                                       
+                                        mutipleFileChange(e.target.files);                                       
                                     }}
                                 
                                 />
                             </label>
                             
-                            <label htmlFor="video" className="addvideopost">
-                                <span className="addimageText">Add video</span>
+                            <label htmlFor="video" className="add-video-post">
+                                <span className="add-image-Text">Add video</span>
                                 <input
                                     style={{ display: "none" }}
                                     type="file"
@@ -348,8 +330,8 @@ export default function CreatePost() {
 
                         </form>
                     </div>
-                    <div className='createpostright'>
-                        <div className='createpostrightTop'>
+                    <div className='create-post-right'>
+                        <div className='create-post-right-Top'>
 
                             <Select placeholder='Status' 
                                 size={'lg'} 
@@ -369,7 +351,7 @@ export default function CreatePost() {
                             </Select>
                             
                         </div>
-                        <Box className='postrightBody'>
+                        <Box className='post-right-Body'>
                             <span>Preview</span>
                             <Box>
                                 {desc && (
@@ -377,7 +359,7 @@ export default function CreatePost() {
                                 {mutifile &&(
                                 <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
                                     <FbImageLibrary images={mutifile} countFrom={5} />
-                                    <CancelIcon className="reviewCancelImg" onClick={() => setMutifile(null)} />
+                                    <CancelIcon className="review-Cancel-Img" onClick={() => setMutifile(null)} />
                                 </Flex>
                                 
                                 )}
@@ -385,12 +367,12 @@ export default function CreatePost() {
                                     <Flex flexWrap={'wrap'} justifyContent= 'space-between'>
 
                                             <video
-                                                className="VideoInput_video"
+                                                className="Video-Input_video"
                                                 width="86%"
                                                 controls
                                                 src={URL.createObjectURL(source)}
                                             />
-                                        <CancelIcon className="reviewCancelImg" onClick={() => setSource(null)} />
+                                        <CancelIcon className="review-Cancel-Img" onClick={() => setSource(null)} />
                                     </Flex>
                                 )}
                             </Box>
