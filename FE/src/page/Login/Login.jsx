@@ -11,12 +11,13 @@ export default function LoginLayout() {
   const email = useRef();
   const password = useRef();
   const {dispatch} = useContext(Context);
+  const HOST = process.env.REACT_APP_LOCALHOST
 
   const handleClickLogin = async (e) => {
     e.preventDefault();
       try{
         console.log(1223)
-        const res = await axios.post("http://localhost:8800/api/auth/login",{ email: email.current.value, password: password.current.value });
+        const res = await axios.post(`${HOST}/api/auth/login`,{ email: email.current.value, password: password.current.value });
         dispatch({type: 'LOG_IN',payload: res.data});
         navigate('/')
        

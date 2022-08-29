@@ -18,7 +18,7 @@ import FacebookLogin from "react-facebook-login";
 import AccountCard from '../../Component/AccountCard/AccountCard';
 import { Context} from '../../context/Context';
 import "./Settings.css"
-import ListAccount from '../../Component/ListAccount/ListAccount';
+
 
 
 
@@ -27,11 +27,12 @@ export default function Settings() {
     const {user} = useContext(Context)
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
+    const HOST = process.env.REACT_APP_LOCALHOST
 
 
     useEffect(() => {
       const fetchAccounts = async () => {
-        const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
+        const res = await axios.get(`${HOST}/api/account/accountfb/` + username)
           
         setAccounts(
             res.data.sort((p1, p2) => {
@@ -69,7 +70,7 @@ export default function Settings() {
             }
             console.log(newAccount)
             try {
-                await axios.post("http://localhost:8800/api/account", newAccount);
+                await axios.post(`${HOST}/api/account`, newAccount);
                 window.location.reload();
             }   catch (err) {}
         }

@@ -15,6 +15,7 @@ import "./Analysis.css"
 export default function Analysis() {
     const {user} = useContext(Context)
     const GRAPH_API = process.env.REACT_APP_GRAPH_API
+    const HOST = process.env.REACT_APP_LOCALHOST
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
     const [accountFollow, setAccountFollow] = useState([]);
@@ -33,7 +34,7 @@ export default function Analysis() {
 
     useEffect(() => {
         const fetchAccounts = async () => {
-          const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
+          const res = await axios.get(`${HOST}/api/account/accountfb/` + username)
           setAccounts(
               res.data.sort((p1, p2) => {
                   return new Date(p2.createdAt) - new Date(p1.createdAt);
@@ -77,7 +78,7 @@ export default function Analysis() {
             setEngagement(listengagement.reduce(myFunc))
             setImpressionsUser(listimpressionsUser.reduce(myFunc))
 
-            const res = await axios.get("http://localhost:8800/api/follow/allfolow/" + refs.current.value)
+            const res = await axios.get(`${HOST}/api/follow/allfolow/` + refs.current.value)
             setAccountFollow(
                 res.data.sort((p1, p2) => {
                     return new Date(p1.createdAt) - new Date(p2.createdAt);

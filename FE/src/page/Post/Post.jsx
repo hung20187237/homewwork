@@ -24,6 +24,7 @@ export default function Post() {
     const account = useRef()
     const [dateRange, setDateRange] = useState([moment(), moment()]);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+    const HOST = process.env.REACT_APP_LOCALHOST
     const [data, setData] = useState([]);
 
 
@@ -35,7 +36,7 @@ export default function Post() {
     }
     useEffect(() => {
         const fetchAccounts = async () => {
-          const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
+          const res = await axios.get(`${HOST}/api/account/accountfb/` + username)
           setAccounts(
               res.data.sort((p1, p2) => {
                   return new Date(p2.createdAt) - new Date(p1.createdAt);
@@ -49,7 +50,7 @@ export default function Post() {
         const accountId = account.current.value
         console.log(accountId)
         try {
-            axios.get("http://localhost:8800/api/post/profile/" + accountId)
+            axios.get(`${HOST}/api/post/profile/` + accountId)
             .then(
                 res => {
                     const result = res.data;

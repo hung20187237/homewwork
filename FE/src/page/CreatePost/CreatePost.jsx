@@ -32,6 +32,7 @@ export default function CreatePost() {
     const [mutiupload, setMutiupload] = useState(null);
     const { user: currentUser } = useContext(Context);
     const GRAPH_API = process.env.REACT_APP_GRAPH_API
+    const HOST = process.env.REACT_APP_LOCALHOST
     const content = useRef()
     const status = useRef()
     const account = useRef()
@@ -45,7 +46,7 @@ export default function CreatePost() {
 
     useEffect(() => {
       const fetchAccounts = async () => {
-        const res = await axios.get("http://localhost:8800/api/account/accountfb/" + username)
+        const res = await axios.get(`${HOST}/api/account/accountfb/` + username)
           
         setAccounts(
             res.data.sort((p1, p2) => {
@@ -201,7 +202,7 @@ export default function CreatePost() {
 
             console.log(data);
             try {
-                await axios.post("http://localhost:8800/api/mutiupload", data)
+                await axios.post(`${HOST}/api/mutiupload`, data)
                     .then(res =>
                         res.data
                     ).then(data =>
@@ -224,12 +225,12 @@ export default function CreatePost() {
             newPost.video = fileName;
             console.log(newPost);
             try {
-                await axios.post("http://localhost:8800/api/upload", data);
+                await axios.post(`${HOST}/api/upload`, data);
             } catch (err) {}
         }
         try {
           console.log(newPost)
-          await axios.post("http://localhost:8800/api/post", newPost);
+          await axios.post(`${HOST}/api/post`, newPost);
         } catch (err) {
           console.log(err)
         }

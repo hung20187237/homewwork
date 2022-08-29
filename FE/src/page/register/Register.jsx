@@ -10,6 +10,7 @@ export default function Register() {
     const email = useRef();
     const password = useRef();
     const passwordAgain = useRef();
+    const HOST = process.env.REACT_APP_LOCALHOST
   
     const handleClickRegister = async (e) => {
       e.preventDefault();
@@ -22,7 +23,7 @@ export default function Register() {
           password: password.current.value,
         };
         try {
-          await axios.post("http://localhost:8800/api/auth/register", user);
+          await axios.post(`${HOST}/api/auth/register`, user);
           navigate('/')
         } catch (err) {
           console.log(err);

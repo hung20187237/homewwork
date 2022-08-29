@@ -20,6 +20,7 @@ export default function DashBoard() {
   const [posts, setPosts] = useState([]);
   const [data, setData] = useState([]);
   const monthFormat = 'YYYY/MM';
+  const HOST = process.env.REACT_APP_LOCALHOST
 
 
 
@@ -29,7 +30,7 @@ export default function DashBoard() {
   
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("http://localhost:8800/api/post/allposts/" + username)
+      const res = await axios.get(`${HOST}/api/post/allposts/` + username)
         
       setPosts(
         res.data.sort((p1, p2) => {
