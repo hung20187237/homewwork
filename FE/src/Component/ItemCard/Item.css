@@ -1,9 +1,11 @@
 .postlistitem1{
-    border: 1px solid;
+    border: 1px solid rgb(184, 184, 184);
     display: flex;
     justify-content: space-between;
     margin-bottom: 2vh;
-    background-color: antiquewhite;
+    margin-left: 2vh;
+    margin-right: 2vh;
+    background-color:rgba(163, 195, 255, 0.5);
 }
 .postitemleft1{
     width: 80%;

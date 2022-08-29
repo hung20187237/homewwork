@@ -76,7 +76,7 @@ export default function CreatePost() {
         }
         console.log(src)
         try {
-            await axios.post(`${GRAPH_API}/100547109409842/videos?`, src)
+            axios.post(`${GRAPH_API}/100547109409842/videos?`, src)
             .then(
                 res => {
                     const result = res.data;
@@ -132,7 +132,7 @@ export default function CreatePost() {
                 
                 console.log(newData)
                 try {
-                    await axios.post(`${GRAPH_API}/100547109409842/photos?`, newData)
+                    axios.post(`${GRAPH_API}/100547109409842/photos?`, newData)
                     .then(
                     res => {
                         const result = res.data;
@@ -151,7 +151,7 @@ export default function CreatePost() {
                 newData1.child_attachments = child_attachments
                 newData1.link = `${GRAPH_API}/Test-1-100547109409842`
                 try {
-                    await axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
+                    axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
                     .then(
                     res => {
                         const result = res.data;
@@ -166,7 +166,7 @@ export default function CreatePost() {
             }
             if(files.length === 0){
                 try {
-                    await axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
+                    axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
                     .then(
                     res => {
                         const result = res.data;
@@ -202,7 +202,7 @@ export default function CreatePost() {
 
             console.log(data);
             try {
-                await axios.post("http://localhost:8800/api/mutiupload", data)
+                axios.post("http://localhost:8800/api/mutiupload", data)
                     .then(res =>
                         res.data
                     ).then(data =>

@@ -18,6 +18,7 @@ import FacebookLogin from "react-facebook-login";
 import AccountCard from '../../Component/AccountCard/AccountCard';
 import { Context} from '../../context/Context';
 import "./Settings.css"
+import ListAccount from '../../Component/ListAccount/ListAccount';
 
 
 
@@ -94,6 +95,7 @@ export default function Settings() {
                                 <AccountCard  key={a._id} account={a}/>
                                 )
                             })} 
+
                                
                             <Box justifyContent={'center'} display='flex' marginTop={"8vh"}>
                                 <FacebookLogin

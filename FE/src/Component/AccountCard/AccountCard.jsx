@@ -30,9 +30,7 @@ export default function AccountCard({account}) {
           userId: currentUser._id,
           account
         },
-
       });
-      setCurrentAccount(null)
     } catch (err) {
       console.log(err)
     }

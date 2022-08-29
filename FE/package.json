@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/plots": "^1.2.1",
+    "@ant-design/pro-components": "^1.1.20",
+    "@ant-design/pro-field": "^1.36.3",
+    "@ant-design/pro-utils": "^1.45.2",
     "@antv/util": "^3.2.3",
     "@chakra-ui/react": "^2.2.3",
     "@emotion/react": "^11.10.0",

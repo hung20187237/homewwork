@@ -49,7 +49,7 @@ export default function Post() {
         const accountId = account.current.value
         console.log(accountId)
         try {
-            await axios.get("http://localhost:8800/api/post/profile/" + accountId)
+            axios.get("http://localhost:8800/api/post/profile/" + accountId)
             .then(
                 res => {
                     const result = res.data;

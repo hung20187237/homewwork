@@ -1,7 +1,6 @@
 .post-list-body{
     margin-top: 8vh;
     overflow-y: scroll;
-    background-color: beige;
     margin: 8vh 4vh;
 }
 .post-time{
@@ -31,10 +30,28 @@
     font-size: 16px;
 }
 .postlistitem {
-    border: 1px solid;
+    border: 1px solid rgb(185, 185, 185);
     display: flex;
     justify-content: space-between;
     margin-bottom: 4vh;
+    background-color: rgba(191, 214, 255, 0.5);
+}
+.postitemleft {
+    width: 80%;
+}
+.postitemleft > div {
+    padding: 1vh;
+    display: flex;
+}
+.postitemleft > div > p {
+    margin-left: 2.5vh;
+    font-size: 18px;
+}
+.postitemleft > span {
+    display: block;
+    padding-left: 1vh;
+    padding-top: 1vh;
+    font-size: 16px;
 }
 
 .imgpostitem {
@@ -60,6 +77,6 @@
 .chakra-select__icon-wrapper {
     display: none !important;
 }
-.css-42b2qy{
+.css-42b2qy {
     width: 50% !important;
 }

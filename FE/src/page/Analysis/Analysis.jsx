@@ -14,6 +14,7 @@ import "./Analysis.css"
 
 export default function Analysis() {
     const {user} = useContext(Context)
+    const GRAPH_API = process.env.REACT_APP_GRAPH_API
     const username = user.username;
     const [accounts, setAccounts] = useState([]);
     const [accountFollow, setAccountFollow] = useState([]);
@@ -41,6 +42,7 @@ export default function Analysis() {
         };
         fetchAccounts();
     }, [username]); 
+    console.log(GRAPH_API)
 
     const getFan = async (e) => {
         
@@ -49,7 +51,7 @@ export default function Analysis() {
         }
         console.log(account.current.value)
         try {
-            const getidIn = await axios.get("https://graph.facebook.com/100547109409842", {
+            const getidIn = await axios.get(`${GRAPH_API}/100547109409842`, {
                 params: {
                     access_token: account.current.value,
                     fields: 'fan_count, followers_count'
@@ -57,7 +59,7 @@ export default function Analysis() {
             })
             setFans(getidIn.data.fan_count)
 
-            const resultInsight = await axios.get("https://graph.facebook.com/100547109409842/insights?", {
+            const resultInsight = await axios.get(`${GRAPH_API}/100547109409842/insights?`, {
                 params: {
                     access_token: account.current.value,
                     metric: 'page_impressions_unique, page_post_engagements, page_impressions, page_engaged_users',
@@ -88,7 +90,7 @@ export default function Analysis() {
             )
             const listrank = [];
 
-            const respos = await axios.get("https://graph.facebook.com/100547109409842/posts?", {
+            const respos = await axios.get(`${GRAPH_API}/100547109409842/posts?`, {
                 params: {
                     access_token: account.current.value,
                     fields: 'id, message, full_picture, created_time',
@@ -99,7 +101,7 @@ export default function Analysis() {
             )
 
             const result = await Promise.all(listrank.map( async(id) => {
-                const res1 = await axios.get(`https://graph.facebook.com/${id.id}/insights?`, {
+                const res1 = await axios.get(`${GRAPH_API}/${id.id}/insights?`, {
                     params: {
                         access_token: account.current.value,
                         metric: 'post_engaged_users',

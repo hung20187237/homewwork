@@ -4,7 +4,7 @@ import "./Item.css"
 export default function Item(posts) {
   return (
     <>
-    {posts.posts.map((post, index) => {
+    {posts.posts.slice(0,3).map((post, index) => {
         return(
             <div className='postlistitem1' key={index} >
                 <div className='postitemleft1'>
