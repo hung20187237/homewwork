@@ -31,7 +31,7 @@ export default function CreatePost() {
     const [files, setFiles] = useState(null);
     const [mutiupload, setMutiupload] = useState(null);
     const { user: currentUser } = useContext(Context);
-    const GRAPH_API = process.env.GRAPH_API
+    const GRAPH_API = process.env.REACT_APP_GRAPH_API
     const content = useRef()
     const status = useRef()
     const account = useRef()
@@ -82,6 +82,7 @@ export default function CreatePost() {
                     const result = res.data;
                     console.log(result);
                     alert("upload video Success!");
+                    window.location.reload();
                 })
         } catch (err) {
             alert("video not uploaded")
@@ -111,25 +112,21 @@ export default function CreatePost() {
 
         const postRandomQuote = async (e) => {
             
-            const newData1 = {
+            const newData = {
                 access_token: refs.current.value,
                 message: content.current.value,
             }
-            if(files.length === 1){
-                const newData = {
-                    access_token: refs.current.value,
-                    message: content.current.value,
-                    url: choseImage[0]
-                }
-                if(status.current.value === 'Scheduled'){
-                    newData.published = 'false'
-                    newData.scheduled_publish_time = currentTimeInSeconds + 600
-                }
+            if(status.current.value === 'Scheduled'){
+                newData.published = 'false'
+                newData.scheduled_publish_time = currentTimeInSeconds + 600
+            }
 
-                if(status.current.value === 'Approcal' || status.current.value === 'Failed' || status.current.value === 'Draft'){
-                    newData.published = 'false'
-                }
+            if(status.current.value === 'Approcal' || status.current.value === 'Failed' || status.current.value === 'Draft'){
+                newData.published = 'false'
+            }
+            if(files.length === 1){
                 
+                newData.url = choseImage[0]
                 console.log(newData)
                 try {
                     axios.post(`${GRAPH_API}/100547109409842/photos?`, newData)
@@ -138,52 +135,54 @@ export default function CreatePost() {
                         const result = res.data;
                         console.log(result);
                         alert("upload image Success!");
+                        window.location.reload();
                     },
                         error => {
                         console.log(error);
                     })
-                    window.location.reload();
+                    // window.location.reload();
                 }catch (err) { }
             }
             if(files.length > 1){
                 const child_attachments =  choseImage.map(v => ({ link: v, picture: v  }))
                 console.log(child_attachments)
-                newData1.child_attachments = child_attachments
-                newData1.link = `${GRAPH_API}/Test-1-100547109409842`
+                newData.child_attachments = child_attachments
+                newData.link = `${GRAPH_API}/Test-1-100547109409842`
                 try {
-                    axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
+                    axios.post(`${GRAPH_API}/100547109409842/feed?`, newData)
                     .then(
                     res => {
                         const result = res.data;
                         console.log(result);
                         alert("upload images Success!");
+                        window.location.reload();
                     },
                         error => {
                         console.log(error);
                     })
-                    window.location.reload();
+                    // 
                 }catch (err) { }
             }
             if(files.length === 0){
                 try {
-                    axios.post(`${GRAPH_API}/100547109409842/feed?`, newData1)
+                    axios.post(`${GRAPH_API}/100547109409842/feed?`, newData)
                     .then(
                     res => {
                         const result = res.data;
                         console.log(result);
                         alert("upload post Success!");
+                        window.location.reload();
                     },
                         error => {
                         console.log(error);
                     })
-                    window.location.reload();
                 }catch (err) { }
             }
         };
-        postRandomQuote.call()
+        postRandomQuote()
+        
         
     }
-
 
 
     const handlePostSubmit = async (e) => {
@@ -192,7 +191,7 @@ export default function CreatePost() {
             desc: content.current.value, 
             status: status.current.value 
         }
-        console.log(newPost)
+        console.log(mutiupload)
         if (mutiupload) {
             const data = new FormData();
             let fileName = [];
@@ -202,7 +201,7 @@ export default function CreatePost() {
 
             console.log(data);
             try {
-                axios.post("http://localhost:8800/api/mutiupload", data)
+                await axios.post("http://localhost:8800/api/mutiupload", data)
                     .then(res =>
                         res.data
                     ).then(data =>
@@ -210,10 +209,11 @@ export default function CreatePost() {
                             fileName.push(file.filename)
                         )
                     )
-                    newPost.img = Object.values(fileName)
-                
+                console.log(fileName)
+                newPost.img =  fileName
             }
             catch (err) { }
+        
         }
         if (source) {
             const data = new FormData();
