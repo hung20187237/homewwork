@@ -56,7 +56,7 @@ router.get("/", async (req, res) => {
   }
 });
 //get all user
-  router.get("/all/all/all", async (req, res) => {
+  router.get("/all", async (req, res) => {
     try {
       const user = await User.find();
       res.status(200).json(user);

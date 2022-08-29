@@ -52,7 +52,7 @@ export default function Analysis() {
         }
         console.log(account.current.value)
         try {
-            const getidIn = await axios.get(`${GRAPH_API}/100547109409842`, {
+            const getidIn = await axios.get(`${GRAPH_API}/${refs.current.value}`, {
                 params: {
                     access_token: account.current.value,
                     fields: 'fan_count, followers_count'
@@ -60,7 +60,7 @@ export default function Analysis() {
             })
             setFans(getidIn.data.fan_count)
 
-            const resultInsight = await axios.get(`${GRAPH_API}/100547109409842/insights?`, {
+            const resultInsight = await axios.get(`${GRAPH_API}/${refs.current.value}/insights?`, {
                 params: {
                     access_token: account.current.value,
                     metric: 'page_impressions_unique, page_post_engagements, page_impressions, page_engaged_users',
@@ -91,7 +91,7 @@ export default function Analysis() {
             )
             const listrank = [];
 
-            const respos = await axios.get(`${GRAPH_API}/100547109409842/posts?`, {
+            const respos = await axios.get(`${GRAPH_API}/${refs.current.value}/posts?`, {
                 params: {
                     access_token: account.current.value,
                     fields: 'id, message, full_picture, created_time',
