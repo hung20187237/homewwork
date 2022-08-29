@@ -34,15 +34,15 @@ export default function AccountCard({ account }) {
 
   return (
     <Flex
-      display={"flex"}
+      display="flex"
       marginTop="6vh"
-      border={"1px solid"}
+      border="1px solid"
       justifyContent="space-between"
-      padding={"12px"}
+      padding="12px"
     >
       {currentaccount ? (
         <>
-          <Flex display={"flex"} alignItems={"center"}>
+          <Flex display="flex" alignItems="center">
             <Image
               height={50}
               width={50}
@@ -50,17 +50,17 @@ export default function AccountCard({ account }) {
               marginRight={16}
               src={account.avatar}
             />
-            <Text alignItems={"center"} fontSize={20} justifyContent="center">
+            <Text alignItems="center" fontSize={20} justifyContent="center">
               {account.accountname}
             </Text>
           </Flex>
           <Flex justifyContent="center" alignItems={"center"}>
-            <Text alignItems={"center"} marginRight={16}>
+            <Text alignItems="center" marginRight={16}>
               Update
             </Text>
-            {account.userId == currentUser._id ? (
+            {account.userId === currentUser._id ? (
               <Text
-                alignItems={"center"}
+                alignItems="center"
                 marginRight={16}
                 onClick={handleAccountDelete}
               >

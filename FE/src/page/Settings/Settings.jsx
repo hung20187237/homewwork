@@ -85,10 +85,10 @@ export default function Settings() {
                 justifyContent: "center",
               }}
             >
-              <Tab width={"30%"} border="1px solid" borderRadius={10}>
+              <Tab width="30%" border="1px solid" borderRadius={10}>
                 SNS
               </Tab>
-              <Tab width={"30%"} border="1px solid" borderRadius={10}>
+              <Tab width="30%" border="1px solid" borderRadius={10}>
                 Notification
               </Tab>
             </TabList>
@@ -98,7 +98,7 @@ export default function Settings() {
                   return <AccountCard key={a._id} account={a} />;
                 })}
 
-                <Box justifyContent={"center"} display="flex" marginTop={"8vh"}>
+                <Box justifyContent="center" display="flex" marginTop="8vh">
                   <FacebookLogin
                     appId="357364879892123"
                     autoLoad={true}
@@ -110,26 +110,26 @@ export default function Settings() {
               </TabPanel>
               <TabPanel>
                 <Box
-                  width={"100%"}
+                  width="100%"
                   height="56vh"
                   border="1px solid"
-                  marginTop={"8vh"}
+                  marginTop="8vh"
                 >
                   <Box
-                    display={"flex"}
+                    display="flex"
                     justifyContent="space-between"
-                    padding={"4px 16px"}
+                    padding="4px 16px"
                   >
                     <Text>When post scheduled</Text>
-                    <Input height={20} width={20} type={"checkbox"} />
+                    <Input height={20} width={20} type="checkbox" />
                   </Box>
                   <Box
-                    display={"flex"}
+                    display="flex"
                     justifyContent="space-between"
-                    padding={"4px 16px"}
+                    padding="4px 16px"
                   >
                     <Text>When post published</Text>
-                    <Input height={20} width={20} type={"checkbox"} />
+                    <Input height={20} width={20} type="checkbox" />
                   </Box>
                   <Box
                     display={"flex"}
@@ -137,7 +137,7 @@ export default function Settings() {
                     padding={"4px 16px"}
                   >
                     <Text>When post publish failed</Text>
-                    <Input height={20} width={20} type={"checkbox"} />
+                    <Input height={20} width={20} type="checkbox" />
                   </Box>
                   <Box
                     display={"flex"}
@@ -145,15 +145,15 @@ export default function Settings() {
                     padding={"4px 16px"}
                   >
                     <Text>When post is approved</Text>
-                    <Input height={20} width={20} type={"checkbox"} />
+                    <Input height={20} width={20} type="checkbox" />
                   </Box>
                   <Box
-                    display={"flex"}
+                    display="flex"
                     justifyContent="space-between"
-                    padding={"4px 16px"}
+                    padding="4px 16px"
                   >
                     <Text>When token expired</Text>
-                    <Input height={20} width={20} type={"checkbox"} />
+                    <Input height={20} width={20} type="checkbox" />
                   </Box>
                 </Box>
               </TabPanel>
