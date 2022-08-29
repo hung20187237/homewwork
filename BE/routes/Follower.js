@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/allfolow/:accountId", async (req, res) => {
+router.get("/followers/:accountId", async (req, res) => {
   try {
     const follows = await Follower.find({ accountId: req.params.accountId });
     res.status(200).json(follows);

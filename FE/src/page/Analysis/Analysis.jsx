@@ -83,7 +83,7 @@ export default function Analysis() {
       setImpressionsUser(listimpressionsUser.reduce(myFunc));
 
       const res = await axios.get(
-        `${HOST}/api/follow/allfolow/` + refs.current.value
+        `${HOST}/api/follow/followers/` + refs.current.value
       );
       setAccountFollow(
         res.data.sort((p1, p2) => {
