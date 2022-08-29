@@ -12,9 +12,9 @@ const morgan = require("morgan");
 const multer = require("multer");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
-const accountRoute = require('./routes/Accountfb');
+const accountRoute = require('./routes/accountfb');
 const postRoute = require('./routes/post')
-const followerRoute = require('./routes/Follower')
+const followerRoute = require('./routes/follower')
 const path = require("path");
 
 
