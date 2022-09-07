@@ -14,7 +14,7 @@ import "./Analysis.css";
 
 export default function Analysis() {
   const { user } = useContext(Context);
-  const GRAPH_API = process.env.REACT_APP_GRAPH_API;
+  const FACEBOOK_GRAPH_API_URL = process.env.REACT_APP_FACEBOOK_GRAPH_API_URL;
   const HOST = process.env.REACT_APP_LOCALHOST;
   const username = user.username;
   const [accounts, setAccounts] = useState([]);
@@ -42,7 +42,7 @@ export default function Analysis() {
     };
     fetchAccounts();
   }, [username]);
-  console.log(GRAPH_API);
+  console.log(FACEBOOK_GRAPH_API_URL);
 
   const getFan = async (e) => {
     function myFunc(total, num) {
@@ -50,7 +50,7 @@ export default function Analysis() {
     }
     console.log(account.current.value);
     try {
-      const getidIn = await axios.get(`${GRAPH_API}/${refs.current.value}`, {
+      const getidIn = await axios.get(`${FACEBOOK_GRAPH_API_URL}/${refs.current.value}`, {
         params: {
           access_token: account.current.value,
           fields: "fan_count, followers_count",
@@ -59,7 +59,7 @@ export default function Analysis() {
       setFans(getidIn.data.fan_count);
 
       const resultInsight = await axios.get(
-        `${GRAPH_API}/${refs.current.value}/insights?`,
+        `${FACEBOOK_GRAPH_API_URL}/${refs.current.value}/insights?`,
         {
           params: {
             access_token: account.current.value,
@@ -98,7 +98,7 @@ export default function Analysis() {
       const listrank = [];
 
       const respos = await axios.get(
-        `${GRAPH_API}/${refs.current.value}/posts?`,
+        `${FACEBOOK_GRAPH_API_URL}/${refs.current.value}/posts?`,
         {
           params: {
             access_token: account.current.value,
@@ -110,7 +110,7 @@ export default function Analysis() {
 
       const result = await Promise.all(
         listrank.map(async (id) => {
-          const res1 = await axios.get(`${GRAPH_API}/${id.id}/insights?`, {
+          const res1 = await axios.get(`${FACEBOOK_GRAPH_API_URL}/${id.id}/insights?`, {
             params: {
               access_token: account.current.value,
               metric: "post_engaged_users",

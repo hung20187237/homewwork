@@ -20,7 +20,7 @@ export default function CreatePost() {
   const [files, setFiles] = useState(null);
   const [mutiupload, setMutiupload] = useState(null);
   const { user: currentUser } = useContext(Context);
-  const GRAPH_API = process.env.REACT_APP_GRAPH_API;
+  const FACEBOOK_GRAPH_API_URL = process.env.REACT_APP_FACEBOOK_GRAPH_API_URL;
   const HOST = process.env.REACT_APP_LOCALHOST;
   const content = useRef();
   const status = useRef();
@@ -68,7 +68,7 @@ export default function CreatePost() {
     }
     console.log(src);
     try {
-      axios.post(`${GRAPH_API}/100547109409842/videos?`, src).then((res) => {
+      axios.post(`${FACEBOOK_GRAPH_API_URL}/100547109409842/videos?`, src).then((res) => {
         const result = res.data;
         console.log(result);
         alert("upload video Success!");
@@ -121,7 +121,7 @@ export default function CreatePost() {
         newData.url = choseImage[0];
         console.log(newData);
         try {
-          axios.post(`${GRAPH_API}/100547109409842/photos?`, newData).then(
+          axios.post(`${FACEBOOK_GRAPH_API_URL}/100547109409842/photos?`, newData).then(
             (res) => {
               const result = res.data;
               console.log(result);
@@ -142,9 +142,9 @@ export default function CreatePost() {
         }));
         console.log(child_attachments);
         newData.child_attachments = child_attachments;
-        newData.link = `${GRAPH_API}/Test-1-100547109409842`;
+        newData.link = `${FACEBOOK_GRAPH_API_URL}/Test-1-100547109409842`;
         try {
-          axios.post(`${GRAPH_API}/100547109409842/feed?`, newData).then(
+          axios.post(`${FACEBOOK_GRAPH_API_URL}/100547109409842/feed?`, newData).then(
             (res) => {
               const result = res.data;
               console.log(result);
@@ -160,7 +160,7 @@ export default function CreatePost() {
       }
       if (files.length === 0) {
         try {
-          axios.post(`${GRAPH_API}/100547109409842/feed?`, newData).then(
+          axios.post(`${FACEBOOK_GRAPH_API_URL}/100547109409842/feed?`, newData).then(
             (res) => {
               const result = res.data;
               console.log(result);
